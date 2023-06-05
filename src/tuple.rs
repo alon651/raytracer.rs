@@ -152,3 +152,14 @@ impl std::ops::Index<usize> for Tuple {
         }
     }
 }
+impl std::ops::IndexMut<usize> for Tuple {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        match index {
+            0 => &mut self.x,
+            1 => &mut self.y,
+            2 => &mut self.z,
+            3 => &mut self.w,
+            _ => panic!("Index out of bounds"),
+        }
+    }
+}
