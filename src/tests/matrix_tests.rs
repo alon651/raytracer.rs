@@ -53,7 +53,7 @@ fn make_matrix_and_multiply_with_tuple() {
     ];
     let m = Matrix::new(4, 4, data).unwrap();
     let t = Tuple::new(1.0, 2.0, 3.0, 4.0);
-    assert_eq!(&m * t, Tuple::new(30.0, 70.0, 110.0, 150.0))
+    assert_eq!(&m * t, Tuple::new(30.0, 70.0, 110.0, 150.0));
 }
 
 #[test]
@@ -105,4 +105,23 @@ fn check_submatrix() {
         .submatrix(0, 2);
     println!("{m:?}");
     assert_eq!(1, 1);
+}
+
+#[test]
+fn check_minor() {
+    assert_eq!(
+        Matrix::new(3, 3, vec![3.0, 5.0, 0.0, 2.0, -1.0, -7.0, 6.0, -1.0, 5.0])
+            .unwrap()
+            .minor(1, 0),
+        25.0
+    );
+}
+
+#[test]
+fn determinant_of_large_matrix() {
+    let m = Matrix::new(3, 3, vec![1.0, 2.0, 6.0, -5.0, 8.0, -4.0, 2.0, 6.0, 4.0]).unwrap();
+    assert_eq!(m.cofactor(0, 0), 56.0);
+    assert_eq!(m.cofactor(0, 1), 12.0);
+    assert_eq!(m.cofactor(0, 2), -46.0);
+    assert_eq!(m.determinant(), -196.0);
 }

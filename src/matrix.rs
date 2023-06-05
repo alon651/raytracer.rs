@@ -72,16 +72,20 @@ impl Matrix {
         }
     }
 
-    pub fn determinant(self) -> f32 {
+    pub fn determinant(&self) -> f32 {
         if self.n_rows != self.n_cols {
             panic!("matrix must be square");
         }
+        let mut det = 0.0;
         if self.n_rows == 2 {
             return self[0][0] * self[1][1] - self[0][1] * self[1][0];
         }
-        return 0.0;
+        for column in 0..self.n_rows {
+            det += self[0][column] * self.cofactor(0, column);
+        }
+        det
     }
-    pub fn submatrix(self, row: usize, col: usize) -> Matrix {
+    pub fn submatrix(&self, row: usize, col: usize) -> Matrix {
         let mut data = vec![f32::default(); (self.n_rows - 1) * (self.n_cols - 1)];
         let mut i = 0;
         for r in 0..self.n_rows {
@@ -102,6 +106,18 @@ impl Matrix {
             data,
             n_rows: self.n_rows - 1,
             n_cols: self.n_cols - 1,
+        }
+    }
+
+    pub fn minor(&self, row: usize, col: usize) -> f32 {
+        self.submatrix(row, col).determinant()
+    }
+    pub fn cofactor(&self, row: usize, col: usize) -> f32 {
+        let minor = self.minor(row, col);
+        if (row + col) % 2 == 0 {
+            minor
+        } else {
+            -minor
         }
     }
 }
