@@ -138,3 +138,17 @@ impl std::ops::Div<f32> for Tuple {
         }
     }
 }
+
+impl std::ops::Index<usize> for Tuple {
+    type Output = f32;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        match index {
+            0 => &self.x,
+            1 => &self.y,
+            2 => &self.z,
+            3 => &self.w,
+            _ => panic!("Index out of bounds"),
+        }
+    }
+}
