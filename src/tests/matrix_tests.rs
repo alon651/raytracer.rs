@@ -125,3 +125,47 @@ fn determinant_of_large_matrix() {
     assert_eq!(m.cofactor(0, 2), -46.0);
     assert_eq!(m.determinant(), -196.0);
 }
+
+#[test]
+fn test_invert() {
+    let data = vec![
+        -5.0, 2.0, 6.0, -8.0, 1.0, -5.0, 1.0, 8.0, 7.0, 7.0, -6.0, -7.0, 1.0, -3.0, 7.0, 4.0,
+    ];
+    let m = Matrix::new(4, 4, data).unwrap().inverse();
+    println!("{m:?}");
+    assert_eq!(
+        m,
+        Matrix {
+            data: vec![
+                0.21804512,
+                0.45112783,
+                0.24060151,
+                -0.04511278,
+                -0.8082707,
+                -1.456767,
+                -0.44360903,
+                0.5206767,
+                -0.078947365,
+                -0.2236842,
+                -0.05263158,
+                0.19736843,
+                -0.52255636,
+                -0.81390977,
+                -0.30075186,
+                0.30639097
+            ],
+            n_rows: 4,
+            n_cols: 4
+        }
+    );
+}
+
+#[test]
+fn matrix_multiply_inverse() {
+    let data = vec![
+        -5.0, 2.0, 6.0, -8.0, 1.0, -5.0, 1.0, 8.0, 7.0, 7.0, -6.0, -7.0, 1.0, -3.0, 7.0, 4.0,
+    ];
+    let m = Matrix::new(4, 4, data).unwrap();
+    let m2 = m.inverse();
+    assert_eq!(&m * &m2, Matrix::identity_matrix(4));
+}

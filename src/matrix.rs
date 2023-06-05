@@ -4,7 +4,7 @@ use std::error::Error;
 use crate::tuple::Tuple;
 #[derive(PartialEq, Debug, Clone)]
 pub struct Matrix {
-    data: Vec<f32>,
+    pub data: Vec<f32>,
     pub n_rows: usize,
     pub n_cols: usize,
 }
@@ -119,6 +119,25 @@ impl Matrix {
         } else {
             -minor
         }
+    }
+
+    pub fn inverse(&self) -> Matrix {
+        let det = self.determinant();
+        let mut data = vec![f32::default(); self.n_rows * self.n_cols];
+        if det == 0.0 {
+            panic!("not invertible")
+        }
+        let mut m = Matrix {
+            data,
+            n_rows: self.n_rows,
+            n_cols: self.n_cols,
+        };
+        for row in 0..self.n_rows {
+            for col in 0..self.n_cols {
+                m.set(col, row, self.cofactor(row, col) / det).unwrap();
+            }
+        }
+        m
     }
 }
 
