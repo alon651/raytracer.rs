@@ -57,6 +57,20 @@ impl Matrix {
             n_cols: n,
         }
     }
+
+    pub fn transpose(self) -> Matrix {
+        let mut data = vec![f32::default(); self.n_rows * self.n_cols];
+        for row in 0..self.n_rows {
+            for col in 0..self.n_cols {
+                data[col * self.n_rows + row] = self.data[row * self.n_cols + col];
+            }
+        }
+        Matrix {
+            data,
+            n_rows: self.n_cols,
+            n_cols: self.n_rows,
+        }
+    }
 }
 
 impl std::ops::Index<usize> for Matrix {
