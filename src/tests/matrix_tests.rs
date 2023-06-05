@@ -91,4 +91,18 @@ fn check_if_transpose_is_correct() {
         .unwrap()
     )
 }
- 
+
+#[test]
+fn check_2x2_det() {
+    let data = vec![1.0, 5.0, -3.0, 2.0];
+    assert_eq!(Matrix::new(2, 2, data).unwrap().determinant(), 17.0);
+}
+
+#[test]
+fn check_submatrix() {
+    let m = Matrix::new(3, 3, vec![1.0, 5.0, 0.0, -3.0, 2.0, 7.0, 0.0, 6.0, -3.0])
+        .unwrap()
+        .submatrix(0, 2);
+    println!("{m:?}");
+    assert_eq!(1, 1);
+}

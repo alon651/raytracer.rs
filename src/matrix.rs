@@ -71,6 +71,39 @@ impl Matrix {
             n_cols: self.n_rows,
         }
     }
+
+    pub fn determinant(self) -> f32 {
+        if self.n_rows != self.n_cols {
+            panic!("matrix must be square");
+        }
+        if self.n_rows == 2 {
+            return self[0][0] * self[1][1] - self[0][1] * self[1][0];
+        }
+        return 0.0;
+    }
+    pub fn submatrix(self, row: usize, col: usize) -> Matrix {
+        let mut data = vec![f32::default(); (self.n_rows - 1) * (self.n_cols - 1)];
+        let mut i = 0;
+        for r in 0..self.n_rows {
+            if r == row {
+                continue;
+            }
+            let mut j = 0;
+            for c in 0..self.n_cols {
+                if c == col {
+                    continue;
+                }
+                data[i * self.n_cols - i + j] = self.data[r * self.n_cols + c];
+                j += 1;
+            }
+            i += 1;
+        }
+        Matrix {
+            data,
+            n_rows: self.n_rows - 1,
+            n_cols: self.n_cols - 1,
+        }
+    }
 }
 
 impl std::ops::Index<usize> for Matrix {
