@@ -139,6 +139,14 @@ impl Matrix {
         }
         m
     }
+
+    pub fn translation(arg_1: f64, arg_2: f64, arg_3: f64) -> Matrix {
+        let mut m = Matrix::identity_matrix(4);
+        m.set(0, 3, arg_1 as f32).unwrap();
+        m.set(1, 3, arg_2 as f32).unwrap();
+        m.set(2, 3, arg_3 as f32).unwrap();
+        m
+    }
 }
 
 impl std::ops::Index<usize> for Matrix {

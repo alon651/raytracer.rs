@@ -169,3 +169,26 @@ fn matrix_multiply_inverse() {
     let m2 = m.inverse();
     assert_eq!(&m * &m2, Matrix::identity_matrix(4));
 }
+
+#[test]
+fn translation_matrix() {
+    let point = Tuple::new_point(2.0, 3.0, 4.0);
+    let translation = Matrix::translation(5.0, -3.0, 2.0);
+    let p = &translation * point;
+    assert_eq!(p, Tuple::new_point(7.0, 0.0, 6.0));
+}
+
+#[test]
+pub fn inverse_translation_matrix() {
+    let point = Tuple::new_point(2.0, 3.0, 4.0);
+    let translation = Matrix::translation(5.0, -3.0, 2.0).inverse();
+    let p = &translation * point;
+    assert_eq!(p, Tuple::new_point(-3.0, 6.0, 2.0));
+}
+
+#[test]
+fn translate_vector() {
+    let v = Tuple::new_vector(2.0, 3.0, 4.0);
+    let translation = Matrix::translation(5.0, -3.0, 2.0);
+    assert_eq!(&translation * v, v);
+}
