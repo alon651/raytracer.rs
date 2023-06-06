@@ -140,11 +140,20 @@ impl Matrix {
         m
     }
 
-    pub fn translation(arg_1: f64, arg_2: f64, arg_3: f64) -> Matrix {
+    pub fn translation(x: f32, y: f32, z: f32) -> Matrix {
         let mut m = Matrix::identity_matrix(4);
-        m.set(0, 3, arg_1 as f32).unwrap();
-        m.set(1, 3, arg_2 as f32).unwrap();
-        m.set(2, 3, arg_3 as f32).unwrap();
+        m.set(0, 3, x as f32).unwrap();
+        m.set(1, 3, y as f32).unwrap();
+        m.set(2, 3, z as f32).unwrap();
+        m
+    }
+    pub fn scale(x: f32, y: f32, z: f32) -> Matrix {
+        let data = vec![f32::default(); 16];
+        let mut m = Matrix::new(4, 4, data).unwrap();
+        m.set(0, 0, x).unwrap();
+        m.set(1, 1, y).unwrap();
+        m.set(2, 2, z).unwrap();
+        m.set(3, 3, 1.0).unwrap();
         m
     }
 }

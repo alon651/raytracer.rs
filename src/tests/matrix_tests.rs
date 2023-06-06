@@ -192,3 +192,10 @@ fn translate_vector() {
     let translation = Matrix::translation(5.0, -3.0, 2.0);
     assert_eq!(&translation * v, v);
 }
+
+#[test]
+fn scaling_matrix() {
+    let transform = Matrix::scale(2.0, 3.0, 4.0);
+    let v = Tuple::new_vector(-4.0, 6.0, 8.0);
+    assert_eq!(&transform * v, Tuple::new_vector(-8.0, 18.0, 32.0));
+}
