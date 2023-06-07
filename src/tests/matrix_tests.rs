@@ -1,3 +1,5 @@
+use std::f32::consts::SQRT_2;
+
 use crate::{matrix::Matrix, tuple::Tuple};
 #[test]
 pub fn create_and_get_4x4_matrix_values() {
@@ -198,4 +200,24 @@ fn scaling_matrix() {
     let transform = Matrix::scale(2.0, 3.0, 4.0);
     let v = Tuple::new_vector(-4.0, 6.0, 8.0);
     assert_eq!(&transform * v, Tuple::new_vector(-8.0, 18.0, 32.0));
+}
+
+#[test]
+fn rotate() {
+    let p = Tuple::new_point(0.0, 1.0, 0.0);
+
+    assert_eq!(
+        &Matrix::rotate_x((std::f64::consts::FRAC_PI_4 as f32).into()).inverse() * p,
+        Tuple::new_point(0.0, SQRT_2 / 2.0, -SQRT_2 / 2.0)
+    );
+    let p = Tuple::new_point(0.0, 0.0, 1.0);
+    assert_eq!(
+        &Matrix::rotate_y((std::f64::consts::FRAC_PI_4 as f32).into()) * p,
+        Tuple::new_point(SQRT_2 / 2.0, 0.0, SQRT_2 / 2.0)
+    );
+    let p = Tuple::new_point(0.0, 1.0, 0.0);
+    assert_eq!(
+        &Matrix::rotate_z((std::f64::consts::FRAC_PI_4 as f32).into()) * p,
+        Tuple::new_point(-SQRT_2 / 2.0, SQRT_2 / 2.0, 0.0)
+    );
 }

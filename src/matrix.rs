@@ -19,15 +19,8 @@ impl Matrix {
             n_cols,
         })
     }
-    //get cell by row and column and return error if out of bounds
-    pub fn _get(&self, row: usize, col: usize) -> Result<f32, Box<dyn Error>> {
-        if row >= self.n_rows || col >= self.n_cols {
-            return Err(Box::from("out of bounds"));
-        }
-        Ok(self.data[row * self.n_cols + col])
-    }
 
-    //set cell by row and column and return error if out of bounds
+    ///set cell by row and column and return error if out of bounds
     pub fn set(&mut self, row: usize, col: usize, value: f32) -> Result<f32, Box<dyn Error>> {
         if row >= self.n_rows || col >= self.n_cols {
             return Err(Box::from("out of bounds"));
@@ -123,7 +116,7 @@ impl Matrix {
 
     pub fn inverse(&self) -> Matrix {
         let det = self.determinant();
-        let mut data = vec![f32::default(); self.n_rows * self.n_cols];
+        let data = vec![f32::default(); self.n_rows * self.n_cols];
         if det == 0.0 {
             panic!("not invertible")
         }
@@ -155,6 +148,70 @@ impl Matrix {
         m.set(2, 2, z).unwrap();
         m.set(3, 3, 1.0).unwrap();
         m
+    }
+
+    pub fn rotate_x(r: f32) -> Matrix {
+        let data = vec![
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            r.cos(),
+            -r.sin(),
+            0.0,
+            0.0,
+            r.sin(),
+            r.cos(),
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+        ];
+        Matrix::new(4, 4, data).unwrap()
+    }
+    pub fn rotate_y(r: f32) -> Matrix {
+        let data = vec![
+            r.cos(),
+            0.0,
+            r.sin(),
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            -r.sin(),
+            0.0,
+            r.cos(),
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+        ];
+        Matrix::new(4, 4, data).unwrap()
+    }
+    pub fn rotate_z(r: f32) -> Matrix {
+        let data = vec![
+            r.cos(),
+            -r.sin(),
+            0.0,
+            0.0,
+            r.sin(),
+            r.cos(),
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+        ];
+        Matrix::new(4, 4, data).unwrap()
     }
 }
 
