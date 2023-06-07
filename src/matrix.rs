@@ -133,24 +133,24 @@ impl Matrix {
         m
     }
 
-    pub fn translation(x: f32, y: f32, z: f32) -> Matrix {
+    pub fn translation(self, x: f32, y: f32, z: f32) -> Matrix {
         let mut m = Matrix::identity_matrix(4);
         m.set(0, 3, x as f32).unwrap();
         m.set(1, 3, y as f32).unwrap();
         m.set(2, 3, z as f32).unwrap();
-        m
+        &self * &m
     }
-    pub fn scale(x: f32, y: f32, z: f32) -> Matrix {
+    pub fn scale(self, x: f32, y: f32, z: f32) -> Matrix {
         let data = vec![f32::default(); 16];
         let mut m = Matrix::new(4, 4, data).unwrap();
         m.set(0, 0, x).unwrap();
         m.set(1, 1, y).unwrap();
         m.set(2, 2, z).unwrap();
         m.set(3, 3, 1.0).unwrap();
-        m
+        &self * &m
     }
 
-    pub fn rotate_x(r: f32) -> Matrix {
+    pub fn rotate_x(self, r: f32) -> Matrix {
         let data = vec![
             1.0,
             0.0,
@@ -169,9 +169,9 @@ impl Matrix {
             0.0,
             1.0,
         ];
-        Matrix::new(4, 4, data).unwrap()
+        &self * &Matrix::new(4, 4, data).unwrap()
     }
-    pub fn rotate_y(r: f32) -> Matrix {
+    pub fn rotate_y(self, r: f32) -> Matrix {
         let data = vec![
             r.cos(),
             0.0,
@@ -190,9 +190,9 @@ impl Matrix {
             0.0,
             1.0,
         ];
-        Matrix::new(4, 4, data).unwrap()
+        &self * &Matrix::new(4, 4, data).unwrap()
     }
-    pub fn rotate_z(r: f32) -> Matrix {
+    pub fn rotate_z(self, r: f32) -> Matrix {
         let data = vec![
             r.cos(),
             -r.sin(),
@@ -211,7 +211,13 @@ impl Matrix {
             0.0,
             1.0,
         ];
-        Matrix::new(4, 4, data).unwrap()
+        &self * &Matrix::new(4, 4, data).unwrap()
+    }
+    pub fn shearing(self, xy: f32, xz: f32, yx: f32, yz: f32, zx: f32, zy: f32) -> Matrix {
+        let data = vec![
+            1.0, xy, xz, 0.0, yx, 1.0, yz, 0.0, zx, zy, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+        ];
+        &self * &Matrix::new(4, 4, data).unwrap()
     }
 }
 

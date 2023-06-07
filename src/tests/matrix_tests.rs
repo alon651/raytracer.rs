@@ -175,7 +175,7 @@ fn matrix_multiply_inverse() {
 #[test]
 fn translation_matrix() {
     let point = Tuple::new_point(2.0, 3.0, 4.0);
-    let translation = Matrix::translation(5.0, -3.0, 2.0);
+    let translation = Matrix::identity_matrix(4).translation(5.0, -3.0, 2.0);
     let p = &translation * point;
     assert_eq!(p, Tuple::new_point(7.0, 0.0, 6.0));
 }
@@ -183,7 +183,9 @@ fn translation_matrix() {
 #[test]
 pub fn inverse_translation_matrix() {
     let point = Tuple::new_point(2.0, 3.0, 4.0);
-    let translation = Matrix::translation(5.0, -3.0, 2.0).inverse();
+    let translation = Matrix::identity_matrix(4)
+        .translation(5.0, -3.0, 2.0)
+        .inverse();
     let p = &translation * point;
     assert_eq!(p, Tuple::new_point(-3.0, 6.0, 2.0));
 }
@@ -191,13 +193,13 @@ pub fn inverse_translation_matrix() {
 #[test]
 fn translate_vector() {
     let v = Tuple::new_vector(2.0, 3.0, 4.0);
-    let translation = Matrix::translation(5.0, -3.0, 2.0);
+    let translation = Matrix::identity_matrix(4).translation(5.0, -3.0, 2.0);
     assert_eq!(&translation * v, v);
 }
 
 #[test]
 fn scaling_matrix() {
-    let transform = Matrix::scale(2.0, 3.0, 4.0);
+    let transform = Matrix::identity_matrix(4).scale(2.0, 3.0, 4.0);
     let v = Tuple::new_vector(-4.0, 6.0, 8.0);
     assert_eq!(&transform * v, Tuple::new_vector(-8.0, 18.0, 32.0));
 }
@@ -207,17 +209,37 @@ fn rotate() {
     let p = Tuple::new_point(0.0, 1.0, 0.0);
 
     assert_eq!(
-        &Matrix::rotate_x((std::f64::consts::FRAC_PI_4 as f32).into()).inverse() * p,
+        &Matrix::identity_matrix(4)
+            .rotate_x(std::f64::consts::FRAC_PI_4 as f32)
+            .inverse()
+            * p,
         Tuple::new_point(0.0, SQRT_2 / 2.0, -SQRT_2 / 2.0)
     );
     let p = Tuple::new_point(0.0, 0.0, 1.0);
     assert_eq!(
-        &Matrix::rotate_y((std::f64::consts::FRAC_PI_4 as f32).into()) * p,
+        &Matrix::identity_matrix(4).rotate_y(std::f64::consts::FRAC_PI_4 as f32) * p,
         Tuple::new_point(SQRT_2 / 2.0, 0.0, SQRT_2 / 2.0)
     );
     let p = Tuple::new_point(0.0, 1.0, 0.0);
     assert_eq!(
-        &Matrix::rotate_z((std::f64::consts::FRAC_PI_4 as f32).into()) * p,
+        &Matrix::identity_matrix(4).rotate_z(std::f64::consts::FRAC_PI_4 as f32) * p,
         Tuple::new_point(-SQRT_2 / 2.0, SQRT_2 / 2.0, 0.0)
     );
+}
+
+#[test]
+fn test_shearing() {
+    let transform = Matrix::identity_matrix(4).shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    let p = Tuple::new_point(2.0, 3.0, 4.0);
+    assert_eq!(&transform * p, Tuple::new_point(5.0, 3.0, 4.0))
+}
+
+#[test]
+fn test_chaining() {
+    let t = Matrix::identity_matrix(4)
+        .translation(10.0, 5.0, 7.0)
+        .scale(5.0, 5.0, 5.0)
+        .rotate_x(std::f32::consts::FRAC_PI_2);
+    let p = Tuple::new_point(1.0, 0.0, 1.0);
+    assert_eq!(&t * p, Tuple::new_point(15.0, 0.0, 7.0))
 }
