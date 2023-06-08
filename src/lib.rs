@@ -6,3 +6,6 @@ pub mod color;
 pub mod matrix;
 pub mod tuple;
 pub mod utils;
+pub mod ray;
+pub mod sphere;
+mod traits;

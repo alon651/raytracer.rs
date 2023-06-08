@@ -135,9 +135,9 @@ impl Matrix {
 
     pub fn translation(self, x: f32, y: f32, z: f32) -> Matrix {
         let mut m = Matrix::identity_matrix(4);
-        m.set(0, 3, x as f32).unwrap();
-        m.set(1, 3, y as f32).unwrap();
-        m.set(2, 3, z as f32).unwrap();
+        m.set(0, 3, x).unwrap();
+        m.set(1, 3, y).unwrap();
+        m.set(2, 3, z).unwrap();
         &self * &m
     }
     pub fn scale(self, x: f32, y: f32, z: f32) -> Matrix {
