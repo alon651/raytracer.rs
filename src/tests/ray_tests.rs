@@ -103,7 +103,7 @@ fn test_object_tracking() {
 }
 
 #[test]
-fn testUniqueId() {
+fn test_unique_id() {
     let s = Sphere::new();
     let s1 = Sphere::new();
     assert_eq!(s.id, 0);
