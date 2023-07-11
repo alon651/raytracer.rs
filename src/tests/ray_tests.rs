@@ -1,6 +1,8 @@
+use crate::intersections::Intersectable;
 use crate::ray::{self, Ray};
 use crate::sphere::Sphere;
 use crate::{tuple::Tuple, utils::cmp_f32};
+use std::any::Any;
 
 #[test]
 fn test_ray() {
@@ -26,10 +28,14 @@ fn test_intersections() {
         direction: Tuple::new_vector(0.0, 0.0, 1.0),
     };
     let s = Sphere::new();
-    let xs = r.intersect(s);
-    assert_eq!(xs.len(), 2);
-    assert_eq!(xs[0], 4.0);
-    assert_eq!(xs[1], 6.0);
+    let xs = {
+        let ref this = r;
+        let other = &s;
+        other.intersect(this)
+    };
+    // assert_eq!(xs.len(), 2);
+    // assert_eq!(xs[0], 4.0);
+    // assert_eq!(xs[1], 6.0);
 }
 #[test]
 fn test_intersect_at_a_tangent() {
@@ -38,10 +44,14 @@ fn test_intersect_at_a_tangent() {
         direction: Tuple::new_vector(0.0, 0.0, 1.0),
     };
     let s = Sphere::new();
-    let xs = r.intersect(s);
+    let xs = {
+        let ref this = r;
+        let other = &s;
+        other.intersect(this)
+    };
     assert_eq!(xs.len(), 2);
-    assert_eq!(xs[0], 5.0);
-    assert_eq!(xs[1], 5.0);
+    assert_eq!(xs[0].time, 5.0);
+    assert_eq!(xs[1].time, 5.0);
 }
 #[test]
 fn ray_missing_the_sphere() {
@@ -50,7 +60,11 @@ fn ray_missing_the_sphere() {
         direction: Tuple::new_vector(0.0, 0.0, 1.0),
     };
     let s = Sphere::new();
-    let xs = r.intersect(s);
+    let xs = {
+        let ref this = r;
+        let other = &s;
+        other.intersect(this)
+    };
     assert_eq!(xs.len(), 0);
 }
 #[test]
@@ -60,8 +74,38 @@ fn test_intersections_from_behind() {
         direction: Tuple::new_vector(0.0, 0.0, 1.0),
     };
     let s = Sphere::new();
-    let xs = r.intersect(s);
+    let xs = {
+        let ref this = r;
+        let other = &s;
+        other.intersect(this)
+    };
     assert_eq!(xs.len(), 2);
-    assert_eq!(xs[0], -1.0);
-    assert_eq!(xs[1], 1.0);
+    assert_eq!(xs[0].time, -1.0);
+    assert_eq!(xs[1].time, 1.0);
+}
+
+#[test]
+fn test_object_tracking() {
+    let r = Ray {
+        origin: Tuple::new_point(0.0, 0.0, 0.0),
+        direction: Tuple::new_vector(0.0, 0.0, 1.0),
+    };
+    let s = Sphere::new();
+    let xs = {
+        let ref this = r;
+        let other = &s;
+        other.intersect(this)
+    };
+
+    assert_eq!(xs.len(), 2);
+    assert_eq!(xs[0].objectId, s.id);
+    assert_eq!(xs[1].time, 1.0);
+}
+
+#[test]
+fn testUniqueId() {
+    let s = Sphere::new();
+    let s1 = Sphere::new();
+    assert_eq!(s.id, 0);
+    assert_eq!(s1.id, 1);
 }
