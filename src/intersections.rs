@@ -1,5 +1,6 @@
 use crate::{matrix::Matrix, ray::Ray};
 
+#[derive(Debug)]
 pub struct Intersections {
     pub intersections: Vec<Intersection>,
 }
@@ -11,7 +12,7 @@ pub struct Intersection {
 }
 
 pub trait Intersectable {
-    fn getTransform(&self) -> Matrix;
+    fn get_transform(&self) -> &Matrix;
     fn intersect(&self, ray: &Ray) -> Intersections;
     // Other methods specific to intersectable objects
 }
@@ -33,11 +34,10 @@ impl std::ops::Index<usize> for Intersections {
 }
 
 impl Intersections {
-    pub fn hits(&self) -> &Intersection {
+    pub fn hits(&self) -> Option<&Intersection> {
         self.intersections
             .iter()
             .filter(|item| item.time >= 0.0)
             .min_by(|x, y| x.time.partial_cmp(&y.time).unwrap())
-            .unwrap()
     }
 }

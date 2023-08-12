@@ -12,7 +12,7 @@ impl Ray {
         self.origin + self.direction * t
     }
     pub fn intersect(&self, other: &dyn Intersectable) -> Intersections {
-        let ray2 = self.transform(other.getTransform().inverse());
+        let ray2 = self.transform(other.get_transform().inverse());
         other.intersect(&ray2)
     }
     pub fn transform(&self, transformation: Matrix) -> Ray {
@@ -20,5 +20,8 @@ impl Ray {
             origin: &transformation * self.origin,
             direction: &transformation * self.direction,
         }
+    }
+    pub fn new(origin: Tuple, direction: Tuple) -> Ray {
+        Ray { origin, direction }
     }
 }

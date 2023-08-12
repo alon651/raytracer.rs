@@ -1,6 +1,6 @@
 use ray_tracer::{canvas, matrix, tuple};
 fn main() {
-    let size: f32 = 500.0;
+    let size: f32 = 100.0;
     let iteration = 12;
     let mut c = canvas::Canvas::new(size as usize, size as usize);
     let mut p = tuple::Tuple::new_point(0.0, 0.0, size / 3.0);
@@ -11,7 +11,7 @@ fn main() {
         c.set_pixel(
             (p.x + size / 2.0) as usize,
             (p.z + size / 2.0) as usize,
-            (120.0, 120.0, 120.0),
+            (255.0, 0.0, 0.0),
         );
     }
 

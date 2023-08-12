@@ -50,8 +50,8 @@ impl Intersectable for Sphere {
         ])
     }
 
-    fn getTransform(&self) -> Matrix {
-        self.transform
+    fn get_transform(&self) -> &Matrix {
+        &self.transform
     }
 }
 

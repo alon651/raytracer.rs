@@ -130,7 +130,7 @@ fn testHItsFunction() {
         time: 5.0,
     };
     let xs = Intersections::new(vec![i1, i2, i3, i4]);
-    assert_eq!(xs.hits(), &i3);
+    assert_eq!(xs.hits().unwrap(), &i3);
 }
 
 #[test]
