@@ -5,8 +5,8 @@ pub fn cmp_f32(x: f32, y: f32) -> bool {
 
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-static Ids: AtomicUsize = AtomicUsize::new(0);
+static IDS: AtomicUsize = AtomicUsize::new(0);
 
-pub fn generateId() -> usize {
-    Ids.fetch_add(1, Ordering::SeqCst)
+pub fn generate_id() -> usize {
+    IDS.fetch_add(1, Ordering::SeqCst)
 }
