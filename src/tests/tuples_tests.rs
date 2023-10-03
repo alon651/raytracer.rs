@@ -87,3 +87,35 @@ pub fn cross_product() {
     let b = Tuple::new_vector(2.0, 3.0, 4.0);
     assert_eq!(a.cross(b), Tuple::new_vector(-1.0, 2.0, -1.0));
 }
+
+#[test]
+pub fn reflecting_vector_at_45() {
+    let v = Tuple::new_vector(1.0, -1.0, 0.0);
+    let n = Tuple::new_vector(0.0, 1.0, 0.0);
+    let r = v.reflect(n);
+    assert_eq!(
+        r,
+        Tuple {
+            x: 1.0,
+            y: 1.0,
+            z: 0.0,
+            w: 0.0
+        }
+    )
+}
+
+#[test]
+pub fn reflecting_vector_of_slanted() {
+    let v = Tuple::new_vector(0.0, -1.0, 0.0);
+    let n = Tuple::new_vector(0.707, 0.707, 0.0);
+    let r = v.reflect(n);
+    assert_eq!(
+        r,
+        Tuple {
+            x: 0.99969804,
+            y: -0.00030195713,
+            z: 0.0,
+            w: 0.0
+        }
+    );
+}

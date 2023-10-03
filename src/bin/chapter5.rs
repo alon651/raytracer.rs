@@ -9,7 +9,7 @@ fn main() {
     let half: f32 = wall_size / 2.0;
 
     let mut canvas = canvas::Canvas::new(500, 500);
-    let color = color::Color::new(255.0, 0.0, 0.0);
+    let color = color::Color::new(1.0, 1.0, 0.0);
     let mut shape = sphere::Sphere::new();
     //shape.set_transform(Matrix::identity_matrix(4).scale(1.0, 2.0, 3.0));
     for y in 0..(canvas_pixel - 1) {
@@ -19,10 +19,7 @@ fn main() {
             let position = Tuple::new_point(world_x, world_y, wall_z);
             let ray = ray::Ray::new(ray_origin, (position - ray_origin).normalize());
             let xs = ray.intersect(&shape);
-            match xs.hits() {
-                Some(i) => canvas.set_pixel(x, y, color.get_rgb()),
-                _ => (),
-            }
+            if let Some(i) = xs.hits() { canvas.set_pixel(x, y, color.get_rgb()) }
         }
     }
 

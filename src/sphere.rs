@@ -6,6 +6,7 @@ use crate::{
     ray::Ray,
     tuple::Tuple,
     utils::generate_id,
+    material::Material
 };
 
 #[derive(PartialEq, Debug)]
@@ -14,6 +15,7 @@ pub struct Sphere {
     center: Tuple,
     pub id: usize,
     pub transform: Matrix,
+    pub material:Material,
 }
 impl Sphere {
     pub fn new() -> Sphere {
@@ -22,13 +24,26 @@ impl Sphere {
             center: Tuple::new_point(0.0, 0.0, 0.0),
             id: generate_id(),
             transform: Matrix::identity_matrix(4),
+            material: Material::default()
         }
     }
     pub fn set_transform(&mut self, t: Matrix) {
         self.transform = t;
     }
+    pub fn normal_at(&self, point: Tuple) -> Tuple {
+        // (point - Tuple::new_point(0.0, 0.0, 0.0)).normalize()
+        let object_point = &self.transform.inverse() * point;
+        let object_normal = object_point - Tuple::new_point(0.0, 0.0, 0.0);
+        let mut world_normal = &self.transform.transpose().inverse() * object_point;
+        world_normal.w = 0.0; //zero the w of the normal to negate size bugs(not elegant but does the job)
+        world_normal.normalize()
+    }
 }
 impl Intersectable for Sphere {
+    fn get_transform(&self) -> &Matrix {
+        &self.transform
+    }
+
     fn intersect(&self, other: &Ray) -> Intersections {
         let sphere_to_ray = other.origin - Tuple::new_point(0.0, 0.0, 0.0);
         let a = other.direction * other.direction;
@@ -48,10 +63,6 @@ impl Intersectable for Sphere {
                 time: (-b + discriminant.sqrt()) / (2.0 * a),
             },
         ])
-    }
-
-    fn get_transform(&self) -> &Matrix {
-        &self.transform
     }
 }
 

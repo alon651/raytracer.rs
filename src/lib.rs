@@ -1,3 +1,5 @@
+
+
 #[cfg(test)]
 mod tests;
 
@@ -9,3 +11,5 @@ pub mod ray;
 pub mod sphere;
 pub mod tuple;
 pub mod utils;
+pub mod light;
+pub mod  material;

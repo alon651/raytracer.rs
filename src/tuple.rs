@@ -13,6 +13,12 @@ pub struct Tuple {
 }
 
 impl Tuple {
+    pub fn reflect(self, normal: Tuple) -> Tuple{
+        self - (normal*2.0*(self*normal))
+    }
+}
+
+impl Tuple {
     /// creates a new tuple that represnt a point.
     /// a point is a tuple with `w=1.0`.
     /// a point represnts a point in space

@@ -51,7 +51,7 @@ impl Matrix {
         }
     }
 
-    pub fn transpose(self) -> Matrix {
+    pub fn transpose(&self) -> Matrix {
         let mut data = vec![f32::default(); self.n_rows * self.n_cols];
         for row in 0..self.n_rows {
             for col in 0..self.n_cols {

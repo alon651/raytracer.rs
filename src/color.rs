@@ -1,5 +1,5 @@
 use crate::tuple::Tuple;
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug, Default,PartialEq)]
 pub struct Color {
     color_tuple: Tuple,
 }
@@ -60,3 +60,4 @@ impl From<(f32, f32, f32)> for Color {
         Tuple::new(value.0, value.1, value.2, 1.0).into()
     }
 }
+
