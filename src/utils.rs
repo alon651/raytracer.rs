@@ -1,4 +1,3 @@
-
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 const EPSILON: f32 = 0.0001;
@@ -11,4 +10,3 @@ static IDS: AtomicUsize = AtomicUsize::new(0);
 pub fn generate_id() -> usize {
     IDS.fetch_add(1, Ordering::SeqCst)
 }
-

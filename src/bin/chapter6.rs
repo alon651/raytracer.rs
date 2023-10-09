@@ -14,7 +14,7 @@ fn main() {
     let pixel_size = wall_size / (canvas_pixel as f32);
     let half: f32 = wall_size / 2.0;
 
-    let mut canvas = Canvas::new(1000, 1000);
+    let canvas = Canvas::new(1000, 1000);
     let mut shape = sphere::Sphere::new();
     shape.set_transform(
         Matrix::identity_matrix(4)
@@ -30,7 +30,6 @@ fn main() {
     let light_position = Tuple::new_point(-10., 10., -10.);
     let light_color = Color::new(1., 1., 1.);
     let light = Light::new(light_color, light_position);
-
 
     // Create slices from the ranges
     let y_range: Vec<usize> = (0..canvas_pixel - 1).collect();

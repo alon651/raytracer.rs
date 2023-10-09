@@ -12,7 +12,13 @@ pub struct Material {
 }
 
 impl Material {
-    pub fn new(ambient: f32, diffuse: f32, specular: f32, shininess: f32,color:Color) -> Material {
+    pub fn new(
+        ambient: f32,
+        diffuse: f32,
+        specular: f32,
+        shininess: f32,
+        color: Color,
+    ) -> Material {
         Material {
             ambient,
             diffuse,
@@ -25,7 +31,7 @@ impl Material {
 
 impl Default for Material {
     fn default() -> Self {
-        Material::new(0.1,0.9,0.9,200.0,Color::new(1.,1.,1.))
+        Material::new(0.1, 0.9, 0.9, 200.0, Color::new(1., 1., 1.))
     }
 }
 

@@ -19,7 +19,9 @@ fn main() {
             let position = Tuple::new_point(world_x, world_y, wall_z);
             let ray = ray::Ray::new(ray_origin, (position - ray_origin).normalize());
             let xs = ray.intersect(&shape);
-            if let Some(i) = xs.hits() { canvas.set_pixel(x, y, color.get_rgb()) }
+            if let Some(i) = xs.hits() {
+                canvas.set_pixel(x, y, color.get_rgb())
+            }
         }
     }
 

@@ -13,8 +13,8 @@ pub struct Tuple {
 }
 
 impl Tuple {
-    pub fn reflect(self, normal: Tuple) -> Tuple{
-        self - (normal*2.0*(self*normal))
+    pub fn reflect(self, normal: Tuple) -> Tuple {
+        self - (normal * 2.0 * (self * normal))
     }
 }
 

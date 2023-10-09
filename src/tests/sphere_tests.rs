@@ -1,5 +1,5 @@
-use crate::{matrix::Matrix, ray::Ray, sphere::Sphere, tuple::Tuple};
 use crate::material::Material;
+use crate::{matrix::Matrix, ray::Ray, sphere::Sphere, tuple::Tuple};
 
 #[test]
 fn testSphereDefaultTransform() {
@@ -76,17 +76,17 @@ fn test_normal_of_transformed_sphere() {
 }
 
 #[test]
-fn sphere_material(){
+fn sphere_material() {
     let s = Sphere::new();
     let m = Material::default();
-    assert_eq!(s.material,m)
+    assert_eq!(s.material, m)
 }
 
 #[test]
-fn sphere_material_change(){
+fn sphere_material_change() {
     let mut s = Sphere::new();
     let mut m = Material::default();
     m.ambient = 1.0;
     s.material = m;
-    assert_eq!(s.material,m)
+    assert_eq!(s.material, m)
 }
