@@ -1,13 +1,14 @@
 use crate::{matrix::Matrix, ray::Ray};
+use crate::object::Object;
 
 #[derive(Debug)]
-pub struct Intersections {
-    pub intersections: Vec<Intersection>,
+pub struct Intersections<'a> {
+    pub intersections: Vec<Intersection<'a>>,
 }
 
 #[derive(PartialEq, Debug, Clone, Copy)]
-pub struct Intersection {
-    pub object_id: usize,
+pub struct Intersection<'a> {
+    pub object_ref: &'a Object,
     pub time: f32,
 }
 
@@ -17,27 +18,24 @@ pub trait Intersectable {
     // Other methods specific to intersectable objects
 }
 
-impl Intersections {
-    pub fn new(intersections: Vec<Intersection>) -> Self {
+impl<'a> Intersections<'a> {
+    pub fn new(intersections: Vec<Intersection<'a>>) -> Intersections<'a> {
         Self { intersections }
     }
     pub fn len(&self) -> usize {
         self.intersections.len()
     }
-}
-impl std::ops::Index<usize> for Intersections {
-    type Output = Intersection;
-
-    fn index(&self, index: usize) -> &Self::Output {
-        &self.intersections[index]
-    }
-}
-
-impl Intersections {
     pub fn hits(&self) -> Option<&Intersection> {
         self.intersections
             .iter()
             .filter(|item| item.time >= 0.0)
             .min_by(|x, y| x.time.partial_cmp(&y.time).unwrap())
+    }
+}
+impl<'a> std::ops::Index<usize> for Intersections<'a> {
+    type Output = Intersection<'a>;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.intersections[index]
     }
 }

@@ -2,16 +2,18 @@
 use std::error::Error;
 
 use crate::tuple::Tuple;
-#[derive(PartialEq, Debug, Clone)]
+const N: usize = 16;
+#[derive(PartialEq, Debug, Clone, Copy)] // Add Copy to derive
 pub struct Matrix {
-    pub data: Vec<f32>,
+    pub data: [f32; N], // Change to an array
     pub n_rows: usize,
     pub n_cols: usize,
 }
+
 impl Matrix {
-    pub fn new(n_rows: usize, n_cols: usize, data: Vec<f32>) -> Result<Matrix, Box<dyn Error>> {
-        if n_rows * n_cols != data.len() {
-            return Err(Box::from("not enough or to much data"));
+    pub fn new(n_rows: usize, n_cols: usize, data: [f32; N]) -> Result<Matrix, Box<dyn Error>> {
+        if n_rows * n_cols > N {
+            return Err(Box::from("not enough or too much data"));
         }
         Ok(Matrix {
             data,
@@ -40,7 +42,7 @@ impl Matrix {
     ///
     /// 0, 0, 0, 1,
     pub fn identity_matrix(n: usize) -> Matrix {
-        let mut data = vec![f32::default(); n * n];
+        let mut data = [0.0;N];
         for i in 0..n {
             data[i * n + i] = 1.0;
         }

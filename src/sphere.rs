@@ -8,8 +8,9 @@ use crate::{
     tuple::Tuple,
     utils::generate_id,
 };
+use crate::object::Object;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug,Clone)]
 pub struct Sphere {
     radius: f32,
     center: Tuple,
@@ -55,11 +56,11 @@ impl Intersectable for Sphere {
         }
         Intersections::new(vec![
             Intersection {
-                object_id: self.id,
+                object_ref: &self.clone(),
                 time: (-b - discriminant.sqrt()) / (2.0 * a),
             },
             Intersection {
-                object_id: self.id,
+                object_ref: &Object::Sphere(self.clone()),
                 time: (-b + discriminant.sqrt()) / (2.0 * a),
             },
         ])

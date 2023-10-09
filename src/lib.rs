@@ -11,3 +11,4 @@ pub mod ray;
 pub mod sphere;
 pub mod tuple;
 pub mod utils;
+mod object;
