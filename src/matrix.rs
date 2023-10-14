@@ -1,33 +1,30 @@
 // use crate::utils::cmp_f32;
 use std::error::Error;
+use image::error::UnsupportedErrorKind::Color;
 
 use crate::tuple::Tuple;
 const N: usize = 16;
+const ROWS:usize = 4;
+const COLS: usize = 4;
 #[derive(PartialEq, Debug, Clone, Copy)] // Add Copy to derive
 pub struct Matrix {
     pub data: [f32; N], // Change to an array
-    pub n_rows: usize,
-    pub n_cols: usize,
+
 }
 
 impl Matrix {
-    pub fn new(n_rows: usize, n_cols: usize, data: [f32; N]) -> Result<Matrix, Box<dyn Error>> {
-        if n_rows * n_cols > N {
-            return Err(Box::from("not enough or too much data"));
-        }
+    pub fn new(data: [f32; N]) -> Result<Matrix, Box<dyn Error>> {
         Ok(Matrix {
-            data,
-            n_rows,
-            n_cols,
+            data
         })
     }
 
     ///set cell by row and column and return error if out of bounds
     pub fn set(&mut self, row: usize, col: usize, value: f32) -> Result<f32, Box<dyn Error>> {
-        if row >= self.n_rows || col >= self.n_cols {
+        if row >= ROWS || col >= COLS {
             return Err(Box::from("out of bounds"));
         }
-        self.data[row * self.n_cols + col] = value;
+        self.data[row * COLS + col] = value;
         Ok(value)
     }
 
@@ -48,29 +45,22 @@ impl Matrix {
         }
         Matrix {
             data,
-            n_rows: n,
-            n_cols: n,
         }
     }
 
     pub fn transpose(&self) -> Matrix {
-        let mut data = vec![f32::default(); self.n_rows * self.n_cols];
-        for row in 0..self.n_rows {
-            for col in 0..self.n_cols {
-                data[col * self.n_rows + row] = self.data[row * self.n_cols + col];
+        let mut data = [f32::default(); ROWS * COLS];
+        for row in 0..ROWS {
+            for col in 0..COLS {
+                data[col * ROWS + row] = self.data[row * COLS + col];
             }
         }
         Matrix {
             data,
-            n_rows: self.n_cols,
-            n_cols: self.n_rows,
         }
     }
 
     pub fn determinant(&self) -> f32 {
-        if self.n_rows != self.n_cols {
-            panic!("matrix must be square");
-        }
         let mut det = 0.0;
         if self.n_rows == 2 {
             return self[0][0] * self[1][1] - self[0][1] * self[1][0];
@@ -99,8 +89,6 @@ impl Matrix {
         }
         Matrix {
             data,
-            n_rows: self.n_rows - 1,
-            n_cols: self.n_cols - 1,
         }
     }
 

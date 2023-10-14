@@ -10,16 +10,15 @@ fn main() {
     let ray_origin = Tuple::new_point(0.0, 0.0, -5.0);
     let wall_z = 10.0;
     let wall_size = 10.0;
-    let canvas_pixel = 1000;
+    let canvas_pixel = 256;
     let pixel_size = wall_size / (canvas_pixel as f32);
     let half: f32 = wall_size / 2.0;
 
-    let canvas = Canvas::new(1000, 1000);
+    let canvas = Canvas::new(256, 256);
     let mut shape = sphere::Sphere::new();
     shape.set_transform(
         Matrix::identity_matrix(4)
-            .rotate_z(0.7)
-            .scale(1.0, 1.5, 1.5),
+            .scale(1.0, 1., 1.).rotate_x(1.5),
     );
     //
     //shape material
