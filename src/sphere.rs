@@ -8,8 +8,9 @@ use crate::{
     tuple::Tuple,
     utils::generate_id,
 };
+use crate::object::Object;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug,Clone)]
 pub struct Sphere {
     radius: f32,
     center: Tuple,
@@ -27,24 +28,15 @@ impl Sphere {
             material: Material::default(),
         }
     }
-    pub fn set_transform(&mut self, t: Matrix) {
-        self.transform = t;
-    }
-    pub fn normal_at(&self, point: Tuple) -> Tuple {
-        // (point - Tuple::new_point(0.0, 0.0, 0.0)).normalize()
-        let object_point = &self.transform.inverse() * point;
-        let _object_normal = object_point - Tuple::new_point(0.0, 0.0, 0.0);
-        let mut world_normal = &self.transform.transpose().inverse() * object_point;
-        world_normal.w = 0.0; //zero the w of the normal to negate size bugs(not elegant but does the job)
-        world_normal.normalize()
-    }
+
+
 }
 impl Intersectable for Sphere {
     fn get_transform(&self) -> &Matrix {
         &self.transform
     }
 
-    fn intersect(&self, other: &Ray) -> Intersections {
+    fn intersect_withoutTRansofrmation(&self, other: &Ray) -> Intersections {
         let sphere_to_ray = other.origin - Tuple::new_point(0.0, 0.0, 0.0);
         let a = other.direction * other.direction;
         let b = 2.0 * (other.direction * sphere_to_ray);
@@ -55,14 +47,29 @@ impl Intersectable for Sphere {
         }
         Intersections::new(vec![
             Intersection {
-                object_id: self.id,
+                object_ref: Box::new(Object::Sphere(self.clone())),
                 time: (-b - discriminant.sqrt()) / (2.0 * a),
             },
             Intersection {
-                object_id: self.id,
+                object_ref: Box::new(Object::Sphere(self.clone())),
                 time: (-b + discriminant.sqrt()) / (2.0 * a),
             },
         ])
+    }
+
+    fn get_material(&self) -> &Material {
+        &self.material
+    }
+     fn set_transform(&mut self, t: Matrix) {
+        self.transform = t;
+    }
+     fn normal_at(&self, point: Tuple) -> Tuple {
+        // (point - Tuple::new_point(0.0, 0.0, 0.0)).normalize()
+        let object_point = &self.transform.inverse() * point;
+        let _object_normal = object_point - Tuple::new_point(0.0, 0.0, 0.0);
+        let mut world_normal = &self.transform.transpose().inverse() * object_point;
+        world_normal.w = 0.0; //zero the w of the normal to negate size bugs(not elegant but does the job)
+        world_normal.normalize()
     }
 }
 

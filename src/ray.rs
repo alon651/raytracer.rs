@@ -1,5 +1,6 @@
 use crate::intersections::{Intersectable, Intersections};
 use crate::matrix::Matrix;
+use crate::object::Object;
 use crate::tuple::Tuple;
 #[derive(Debug, Clone, Copy)]
 pub struct Ray {
@@ -11,9 +12,9 @@ impl Ray {
     pub fn position(self, t: f32) -> Tuple {
         self.origin + self.direction * t
     }
-    pub fn intersect(&self, other: &dyn Intersectable) -> Intersections {
+    pub fn intersect<'a>(&'a self, other: &'a Object) -> Intersections {
         let ray2 = self.transform(other.get_transform().inverse());
-        other.intersect(&ray2)
+        other.intersect_withoutTRansofrmation(&ray2)
     }
     pub fn transform(&self, transformation: Matrix) -> Ray {
         Ray {
