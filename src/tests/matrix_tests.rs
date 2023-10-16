@@ -245,3 +245,20 @@ fn test_chaining() {
     let p = Tuple::new_point(1.0, 0.0, 1.0);
     assert_eq!(&t * p, Tuple::new_point(15.0, 0.0, 7.0))
 }
+
+#[test]
+fn test_view_transform(){
+    let from = Tuple::new_point(0.,0.,0.);
+    let to = Tuple::new_point(0.,0.,-1.);
+    let up = Tuple::new_vector(0.,1.,0.);
+    let t = Matrix::view_transform(from,to,up);
+    assert_eq!(t,Matrix::identity_matrix(4));
+}
+#[test]
+fn test_view_transform_that_moves_the_world(){
+    let from = Tuple::new_point(0.,0.,8.);
+    let to = Tuple::new_point(0.,0.,0.);
+    let up = Tuple::new_vector(0.,1.,0.);
+    let t = Matrix::view_transform(from,to,up);
+    assert_eq!(t,Matrix::identity_matrix(4).translation(0.,0.,-8.));
+}

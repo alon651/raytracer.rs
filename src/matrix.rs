@@ -8,6 +8,26 @@ pub struct Matrix {
     pub n_rows: usize,
     pub n_cols: usize,
 }
+
+impl Matrix {
+    pub fn view_transform(from: Tuple, to: Tuple, up: Tuple) -> Matrix {
+        let forward = ( to- from).normalize();
+        let left = forward.cross(up.normalize());
+        let true_up = left.cross(forward);
+        Matrix::new(
+            4,
+            4,
+            vec![
+                left.x, left.y, left.z, 0.,
+                true_up.x, true_up.y, true_up.z, 0.,
+                -forward.x, -forward.y, -forward.z, 0.,
+                0., 0., 0., 1.,
+            ],
+        )
+        .unwrap().translation(-from.x,-from.y,-from.z)
+    }
+}
+
 impl Matrix {
     pub fn new(n_rows: usize, n_cols: usize, data: Vec<f32>) -> Result<Matrix, Box<dyn Error>> {
         if n_rows * n_cols != data.len() {
