@@ -14,7 +14,7 @@ impl Ray {
     }
     pub fn intersect<'a>(&'a self, other: &'a Object) -> Intersections {
         let ray2 = self.transform(other.get_transform().inverse());
-        other.intersect(&ray2)
+        other.intersect_withoutTRansofrmation(&ray2)
     }
     pub fn transform(&self, transformation: Matrix) -> Ray {
         Ray {

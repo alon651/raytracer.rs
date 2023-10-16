@@ -36,8 +36,8 @@ impl Default for Material {
 }
 
 pub fn lighting(
-    material: Material,
-    light: Light,
+    material: &Material,
+    light: &Light,
     point: Tuple,
     eyev: Tuple,
     normnalv: Tuple,
