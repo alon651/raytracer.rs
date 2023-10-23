@@ -32,7 +32,6 @@ fn main() {
     middle.material.color = Color::new(0.1, 1., 0.5);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
-    middle.material.pattern = Some(p.clone());
     world.push_obj(Object::Sphere(middle));
 
     //right sphere
@@ -43,9 +42,7 @@ fn main() {
     right.material.color = Color::new(0.5, 1., 0.1);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
-    right.material.pattern = Some(p.clone());
     world.push_obj(Object::Sphere(right));
-
     //left sphere
     p.transform = Matrix::identity_matrix(4);
     let mut left = Sphere::new();
@@ -55,7 +52,6 @@ fn main() {
     left.material.color = Color::new(1., 0.8, 0.1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
-    left.material.pattern = Some(p.clone());
     world.push_obj(Object::Sphere(left));
 
     world.lights.push(Light::new(
