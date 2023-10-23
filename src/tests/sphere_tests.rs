@@ -1,6 +1,6 @@
+use crate::intersections::Intersectable;
 use crate::material::Material;
 use crate::{matrix::Matrix, ray::Ray, sphere::Sphere, tuple::Tuple};
-use crate::intersections::Intersectable;
 
 #[test]
 fn testSphereDefaultTransform() {

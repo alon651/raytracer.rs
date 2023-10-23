@@ -75,6 +75,8 @@ impl Canvas {
                 )
             }
         }
-        image.save("canvas.png");
+        image
+            .save(file_name.to_owned() + ".png")
+            .expect("couldn't save image");
     }
 }

@@ -1,3 +1,4 @@
+mod camera_tests;
 mod canvas_tests;
 mod material_test;
 mod matrix_tests;

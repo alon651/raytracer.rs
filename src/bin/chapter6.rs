@@ -1,12 +1,12 @@
 use ray_tracer::canvas::Canvas;
 use ray_tracer::color::Color;
+use ray_tracer::intersections::Intersectable;
 use ray_tracer::light::Light;
 use ray_tracer::material::lighting;
-use ray_tracer::{material::Material, matrix::Matrix, ray::Ray, sphere, tuple::Tuple};
 use ray_tracer::object;
+use ray_tracer::{material::Material, matrix::Matrix, ray::Ray, sphere, tuple::Tuple};
 use rayon::prelude::*;
 use std::sync::Mutex;
-use ray_tracer::intersections::Intersectable;
 
 fn main() {
     let ray_origin = Tuple::new_point(0.0, 0.0, -5.0);
@@ -19,10 +19,7 @@ fn main() {
     let canvas = Canvas::new(canvas_pixel, canvas_pixel);
     let mut shape = sphere::Sphere::new();
 
-    shape.set_transform(
-        Matrix::identity_matrix(4)
-            .scale(1.0, 1., 1.).rotate_x(1.5),
-    );
+    shape.set_transform(Matrix::identity_matrix(4).scale(1.0, 1., 1.).rotate_x(1.5));
     //
     //shape material
     shape.material = Material::default();
@@ -43,7 +40,6 @@ fn main() {
     //convert shape from sphere object to object
     let mut shape = object::Object::Sphere(shape);
 
-
     // Parallel iteration using rayon's par_iter
     y_range.par_iter().for_each(|&y| {
         let world_y = half - pixel_size * y as f32;
@@ -57,7 +53,7 @@ fn main() {
                 let point = ray.position(hit.time);
                 let normal = shape.normal_at(point);
                 let eye = -ray.direction;
-                let color = lighting(shape.get_material(), &light, point, eye, normal);
+                let color = lighting(shape.get_material(), &light, point, eye, normal, false);
                 // Lock the Mutex to access the Canvas
                 let mut canvas_lock = canvas.lock().unwrap();
                 canvas_lock.set_pixel(x, y, color.get_rgb());

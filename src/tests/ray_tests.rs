@@ -32,7 +32,7 @@ fn test_intersections() {
     let xs = {
         let ref this = r;
         let other = &s;
-        other.intersect_withoutTRansofrmation(this)
+        other.local_intersect(this)
     };
     assert_eq!(xs.len(), 2);
     assert_eq!(xs[0].time, 4.0);
@@ -48,7 +48,7 @@ fn test_intersect_at_a_tangent() {
     let xs = {
         let ref this = r;
         let other = &s;
-        other.intersect_withoutTRansofrmation(this)
+        other.local_intersect(this)
     };
     assert_eq!(xs.len(), 2);
     assert_eq!(xs[0].time, 5.0);
@@ -64,7 +64,7 @@ fn ray_missing_the_sphere() {
     let xs = {
         let ref this = r;
         let other = &s;
-        other.intersect_withoutTRansofrmation(this)
+        other.local_intersect(this)
     };
     assert_eq!(xs.len(), 0);
 }
@@ -78,7 +78,7 @@ fn test_intersections_from_behind() {
     let xs = {
         let ref this = r;
         let other = &s;
-        other.intersect_withoutTRansofrmation(this)
+        other.local_intersect(this)
     };
     assert_eq!(xs.len(), 2);
     assert_eq!(xs[0].time, -1.0);
@@ -95,7 +95,7 @@ fn test_object_tracking() {
     let xs = {
         let ref this = r;
         let other = &s;
-        other.intersect_withoutTRansofrmation(this)
+        other.local_intersect(this)
     };
 
     assert_eq!(xs.len(), 2);
@@ -108,8 +108,6 @@ fn test_unique_id() {
     let s1 = Sphere::new();
     assert_ne!(s.id, s1.id);
 }
-
-
 
 #[test]
 fn testTransformRay() {

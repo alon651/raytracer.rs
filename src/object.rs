@@ -1,43 +1,54 @@
 use crate::intersections::{Intersectable, Intersections};
 use crate::material::Material;
 use crate::matrix::Matrix;
+use crate::plane::Plane;
 use crate::ray::Ray;
 use crate::sphere::Sphere;
 use crate::tuple::Tuple;
 
-#[derive(PartialEq,Debug,Clone)]
-pub enum Object{
-    Sphere(Sphere)
+#[derive(PartialEq, Debug, Clone)]
+pub enum Object {
+    Sphere(Sphere),
+    Plane(Plane),
 }
 
 impl Intersectable for Object {
     fn get_transform(&self) -> &Matrix {
-        match self{
-            Object::Sphere(ref s)=>s.get_transform()
+        match self {
+            Object::Sphere(ref s) => s.get_transform(),
+            Object::Plane(ref p) => p.get_transform(),
         }
     }
 
-    fn intersect_withoutTRansofrmation(&self, ray: &Ray) -> Intersections {
-        match self{
-            Object::Sphere(ref s)=>s.intersect_withoutTRansofrmation(ray)
+    fn local_intersect(&self, ray: &Ray) -> Intersections {
+        match self {
+            Object::Sphere(ref s) => s.local_intersect(ray),
+            Object::Plane(ref p) => p.local_intersect(ray),
         }
     }
 
     fn get_material(&self) -> &Material {
         match self {
-            Object::Sphere(ref s)=>s.get_material()
+            Object::Sphere(ref s) => s.get_material(),
+            Object::Plane(ref p) => p.get_material(),
         }
     }
 
-     fn set_transform(&mut self, t: Matrix) {
-         match self {
-             Object::Sphere(ref mut s)=>s.set_transform(t)
-         }
-     }
+    fn set_transform(&mut self, t: Matrix) {
+        match self {
+            Object::Sphere(ref mut s) => s.set_transform(t),
+            Object::Plane(ref mut p) => p.set_transform(t),
+        }
+    }
 
-     fn normal_at(&self, point: Tuple) -> Tuple {
-         match self {
-             Object::Sphere(ref s)=>s.normal_at(point)
-         }
-     }
- }
+    fn normal_at(&self, point: Tuple) -> Tuple {
+        let w = match self {
+            Object::Sphere(ref s) => s.normal_at(point),
+            Object::Plane(ref p) => p.normal_at(point),
+        };
+
+        let mut w = &self.get_transform().transpose().inverse() * w;
+        w.w = 0.;
+        w.normalize()
+    }
+}

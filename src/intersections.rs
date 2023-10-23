@@ -1,8 +1,7 @@
-use std::cmp::Ordering;
-use crate::{matrix::Matrix, ray::Ray};
 use crate::material::Material;
 use crate::object::Object;
 use crate::tuple::Tuple;
+use crate::{matrix::Matrix, ray::Ray};
 
 #[derive(Debug)]
 pub struct Intersections {
@@ -10,7 +9,7 @@ pub struct Intersections {
 }
 
 #[derive(PartialEq, Debug, Clone)]
-pub struct Intersection{
+pub struct Intersection {
     pub object_ref: Box<Object>,
     pub time: f32,
 }
@@ -18,8 +17,8 @@ pub struct Intersection{
 pub trait Intersectable {
     fn get_transform(&self) -> &Matrix;
     ///this function doesn't apply transformation, please use ray.intersect() instead
-    fn intersect_withoutTRansofrmation(&self, ray: &Ray) -> Intersections;
-    fn get_material(&self)->&Material;
+    fn local_intersect(&self, ray: &Ray) -> Intersections;
+    fn get_material(&self) -> &Material;
     fn set_transform(&mut self, t: Matrix);
     fn normal_at(&self, point: Tuple) -> Tuple;
 }
@@ -46,10 +45,12 @@ impl std::ops::Index<usize> for Intersections {
     }
 }
 
-impl std::ops::Add<Intersections> for Intersections{
+impl std::ops::Add<Intersections> for Intersections {
     type Output = Intersections;
 
     fn add(self, rhs: Intersections) -> Self::Output {
-        Intersections{ intersections: [self.intersections, rhs.intersections].concat() }
+        Intersections {
+            intersections: [self.intersections, rhs.intersections].concat(),
+        }
     }
 }

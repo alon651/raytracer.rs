@@ -1,7 +1,7 @@
 use crate::tuple::Tuple;
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Color {
-    color_tuple: Tuple,
+    pub(crate) color_tuple: Tuple,
 }
 impl Color {
     pub fn new(r: f32, g: f32, b: f32) -> Color {
