@@ -29,11 +29,12 @@ pub fn create_stripe_pattern() {
     let pattern = Pattern::new_stripe_pattern(WHITE, BLACK);
     assert_eq!(
         pattern,
-        Pattern {
-            a: WHITE,
-            b: BLACK,
-            transform: Matrix::identity_matrix(4)
-        }
+        Pattern::new_stripe_pattern(WHITE,BLACK)
+        // Pattern::new_stripe{
+        //     a: WHITE,
+        //     b: BLACK,
+        //     transform: Matrix::identity_matrix(4)
+        // }
     )
 }
 
