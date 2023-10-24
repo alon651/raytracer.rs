@@ -28,7 +28,7 @@ fn main() {
         .rotate_y(PI / 4.)
         .rotate_x(PI / 2.)
         .scale(10., 0.01, 10.);
-    right_wall.material = floor.material;
+    right_wall.material = floor.material.clone();
     world.push_obj(Object::Sphere(floor));
     world.push_obj(Object::Sphere(right_wall));
     world.push_obj(Object::Sphere(left_wall));

@@ -13,11 +13,12 @@ use ray_tracer::world::World;
 
 fn main() {
     let mut world = World::default();
-    let mut p = Pattern::new_stripe_pattern(Color::new(1., 0., 0.),
-        Color::new(0., 0., 1.),
+    let mut p = Pattern::new_stripe_pattern(Color::new(1., 0., 0.), Color::new(0., 0., 1.));
+    p.transform(
+        Matrix::identity_matrix(4)
+            .scale(0.5, 0.5, 0.5)
+            .rotate_y(0.9),
     );
-    p.transform(Matrix::identity_matrix(4).scale(0.5, 0.5, 0.5)
-        .rotate_y(0.9));
     //floor
     let mut floor = Plane::new();
     floor.transform = Matrix::identity_matrix(4);
@@ -25,13 +26,15 @@ fn main() {
     floor.material.specular = 0.;
     floor.material.pattern = Some(p.clone());
     world.push_obj(Object::Plane(floor));
-
+    let mut ring = Pattern::new_checkers_pattern(Color::new(1., 0., 0.), Color::new(0., 0., 1.));
+    ring.transform(Matrix::identity_matrix(4).scale(0.05,0.05,0.05).rotate_y(PI/9.));
     // middle sphere
     let mut middle = Sphere::new();
     middle.transform = Matrix::identity_matrix(4).translation(-0.5, 1., 0.5);
     middle.material.color = Color::new(0.1, 1., 0.5);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
+    middle.material.pattern = Some(ring);
     world.push_obj(Object::Sphere(middle));
 
     //right sphere

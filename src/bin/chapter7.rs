@@ -21,15 +21,15 @@ fn main() {
         .rotate_y(-PI / 4.)
         .rotate_x(PI / 2.)
         .scale(10., 0.01, 10.);
-    left_wall.material = floor.material;
+    left_wall.material = floor.material.clone();
     let mut right_wall = Sphere::new();
     right_wall.transform = Matrix::identity_matrix(4)
         .translation(0., 0., 5.)
         .rotate_y(PI / 4.)
         .rotate_x(PI / 2.)
         .scale(10., 0.01, 10.);
-    right_wall.material = floor.material;
-    world.push_obj(Object::Sphere(floor));
+    right_wall.material = floor.material.clone();
+    world.push_obj(Object::Sphere(floor.clone()));
     world.push_obj(Object::Sphere(right_wall));
     world.push_obj(Object::Sphere(left_wall));
 
