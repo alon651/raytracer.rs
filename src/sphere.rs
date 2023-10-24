@@ -15,8 +15,9 @@ pub struct Sphere {
     radius: f32,
     center: Tuple,
     pub id: usize,
-    pub transform: Matrix,
+    transform: Matrix,
     pub material: Material,
+    pub inverse: Matrix,
 }
 impl Sphere {
     pub fn new() -> Sphere {
@@ -26,12 +27,17 @@ impl Sphere {
             id: generate_id(),
             transform: Matrix::identity_matrix(4),
             material: Material::default(),
+            inverse: Matrix::identity_matrix(4).inverse()
         }
     }
 }
 impl Intersectable for Sphere {
     fn get_transform(&self) -> &Matrix {
         &self.transform
+    }
+
+    fn get_inverse(&self) -> &Matrix {
+        &self.inverse
     }
 
     fn local_intersect(&self, other: &Ray) -> Intersections {
@@ -59,10 +65,11 @@ impl Intersectable for Sphere {
         &self.material
     }
     fn set_transform(&mut self, t: Matrix) {
-        self.transform = t;
+        self.transform = t.clone();
+        self.inverse = t.inverse();
     }
     fn normal_at(&self, point: Tuple) -> Tuple {
-        let object_point = &self.transform.inverse() * point;
+        let object_point = &self.inverse * point;
         let object_normal = object_point - Tuple::new_point(0.0, 0.0, 0.0);
         object_normal.normalize()
         // let mut world_normal = &self.transform.transpose().inverse() * object_point;

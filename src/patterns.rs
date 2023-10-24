@@ -6,6 +6,7 @@ use crate::tuple::Tuple;
 pub struct Pattern {
     pub patterns: PatternType,
     pub transform: Matrix,
+    pub inverseTransform: Matrix
 }
 
 impl Pattern {
@@ -21,28 +22,33 @@ impl Pattern {
         Pattern {
             patterns: PatternType::Stripe(StripePattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
+            inverseTransform: Matrix::identity_matrix(4).inverse()
         }
     }
     pub fn new_gradient_pattern(a: Color, b: Color) -> Pattern {
         Pattern {
             patterns: PatternType::Gradient(GradientPattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
+            inverseTransform: Matrix::identity_matrix(4).inverse()
         }
     }
     pub fn new_ring_pattern(a: Color, b: Color) -> Pattern {
         Pattern {
             patterns: PatternType::Ring(RingPattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
+            inverseTransform: Matrix::identity_matrix(4).inverse()
         }
     }
     pub fn new_checkers_pattern(a: Color, b: Color) -> Pattern {
         Pattern {
             patterns: PatternType::Checkers(CheckersPattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
+            inverseTransform: Matrix::identity_matrix(4).inverse(),
         }
     }
     pub fn transform(&mut self,transformation:Matrix){
-        self.transform = transformation
+        self.transform = transformation;
+        self.inverseTransform = self.transform.inverse();
     }
 }
 #[derive(Clone,Debug,PartialEq)]
@@ -97,8 +103,8 @@ pub struct CheckersPattern {
 }
 impl CheckersPattern{
     pub fn pattern_at(&self,point:Tuple)->Color{
-        let  a = point.x.abs() + point.y.abs() + point.z.abs();
-        if a.floor() as i16 % 2 == 0{
+        let  a = point.x.floor() + point.y.floor() + point.z.floor();
+        if a as i16 % 2 == 0{
             return self.colors[0];
         }
         self.colors[1]

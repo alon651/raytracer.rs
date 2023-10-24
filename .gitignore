@@ -1,4 +1,5 @@
 target/
 .idea/
+images_backup/
 Cargo.lock
 *.png

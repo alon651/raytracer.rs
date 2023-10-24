@@ -9,12 +9,17 @@ use crate::utils::EPSILON;
 #[derive(Clone, Debug, PartialEq)]
 pub struct Plane {
     pub material: Material,
-    pub transform: Matrix,
+    transform: Matrix,
+    inverse:Matrix,
 }
 
 impl Intersectable for Plane {
     fn get_transform(&self) -> &Matrix {
         &self.transform
+    }
+
+    fn get_inverse(&self) -> &Matrix {
+        &self.inverse
     }
 
     fn local_intersect(&self, ray: &Ray) -> Intersections {
@@ -33,7 +38,8 @@ impl Intersectable for Plane {
     }
 
     fn set_transform(&mut self, t: Matrix) {
-        self.transform = t;
+        self.transform = t.clone();
+        self.inverse = t.inverse();
     }
 
     fn normal_at(&self, _point: Tuple) -> Tuple {
@@ -46,6 +52,7 @@ impl Plane {
         Plane {
             transform: Matrix::identity_matrix(4),
             material: Material::default(),
+            inverse: Matrix::identity_matrix(4).inverse()
         }
     }
 }

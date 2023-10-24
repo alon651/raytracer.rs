@@ -16,6 +16,7 @@ pub struct Intersection {
 
 pub trait Intersectable {
     fn get_transform(&self) -> &Matrix;
+    fn get_inverse(&self) -> &Matrix;
     ///this function doesn't apply transformation, please use ray.intersect() instead
     fn local_intersect(&self, ray: &Ray) -> Intersections;
     fn get_material(&self) -> &Material;

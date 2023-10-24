@@ -22,6 +22,13 @@ impl Intersectable for Object {
         }
     }
 
+    fn get_inverse(&self) -> &Matrix {
+        match self {
+            Object::Sphere(ref s) => s.get_inverse(),
+            Object::Plane(ref p) => p.get_inverse(),
+        }
+    }
+
     fn local_intersect(&self, ray: &Ray) -> Intersections {
         match self {
             Object::Sphere(ref s) => s.local_intersect(ray),
@@ -49,15 +56,15 @@ impl Intersectable for Object {
             Object::Plane(ref p) => p.normal_at(point),
         };
 
-        let mut w = &self.get_transform().transpose().inverse() * w;
+        let mut w = &self.get_inverse().transpose() * w;
         w.w = 0.;
         w.normalize()
     }
 }
 impl Object {
     pub fn stripe_at_object(&self, pattern: &Pattern, world_point: Tuple) -> Color {
-        let object_point = &self.get_transform().inverse() * world_point;
-        let pattern_point = &pattern.transform.inverse() * object_point;
+        let object_point = self.get_inverse() * world_point;
+        let pattern_point = &pattern.inverseTransform * object_point;
         pattern.pattern_at(pattern_point)
     }
 }

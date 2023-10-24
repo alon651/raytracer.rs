@@ -10,10 +10,11 @@ pub struct Camera {
     pub hsize: usize,
     pub vsize: usize,
     pub field_of_view: f32,
-    pub transform: Matrix,
+    transform: Matrix,
     pub pixel_size: f32,
     half_height: f32,
     half_width: f32,
+    inverse:Matrix,
 }
 
 impl Camera {
@@ -40,6 +41,7 @@ impl Camera {
             pixel_size: (half_width * 2.) / hsize as f32,
             half_width,
             half_height,
+            inverse: Matrix::identity_matrix(4).inverse()
         }
     }
 
@@ -50,8 +52,8 @@ impl Camera {
         let world_x = self.half_width - xoffset;
         let world_y = self.half_height - yoffset;
 
-        let pixel = &self.transform.inverse() * Tuple::new_point(world_x, world_y, -1.);
-        let origin = &self.transform.inverse() * Tuple::new_point(0., 0., 0.);
+        let pixel = &self.inverse * Tuple::new_point(world_x, world_y, -1.);
+        let origin = &self.inverse * Tuple::new_point(0., 0., 0.);
         let direction = (pixel - origin).normalize();
         Ray::new(origin, direction)
     }
@@ -69,6 +71,21 @@ impl Camera {
                 canvas_lock.set_pixel(x, y, c.get_rgb());
             })
         });
+
+        // y_range.iter().for_each(|&y| {
+        //     x_range.iter().for_each(|&x| {
+        //         let r = self.ray_for_pixel(x, y);
+        //         let c = w.color_at(r);
+        //         let mut canvas_lock = canvas.lock().unwrap();
+        //         canvas_lock.set_pixel(x, y, c.get_rgb());
+        //     })
+        // });
+
+
         canvas.into_inner().unwrap()
+    }
+    pub fn set_transform(&mut self, t:Matrix){
+        self.inverse = t.inverse();
+        self.transform = t;
     }
 }

@@ -8,9 +8,11 @@ opt-level = 1
 [profile.dev.package."*"]
 opt-level = 3
 [profile.release]
-opt-level = "z"
-[build]
-rustflags = ["-C", "symbol-mangling-version=v0"]
+opt-level = 3
+#debug=1
+#[build]
+#rustflags = ["-C", "symbol-mangling-version=v0"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
