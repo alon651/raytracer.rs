@@ -6,7 +6,7 @@ use crate::tuple::Tuple;
 pub struct Pattern {
     pub patterns: PatternType,
     pub transform: Matrix,
-    pub inverseTransform: Matrix
+    pub inverse_transform: Matrix
 }
 
 impl Pattern {
@@ -22,33 +22,33 @@ impl Pattern {
         Pattern {
             patterns: PatternType::Stripe(StripePattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
-            inverseTransform: Matrix::identity_matrix(4).inverse()
+            inverse_transform: Matrix::identity_matrix(4).inverse()
         }
     }
     pub fn new_gradient_pattern(a: Color, b: Color) -> Pattern {
         Pattern {
             patterns: PatternType::Gradient(GradientPattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
-            inverseTransform: Matrix::identity_matrix(4).inverse()
+            inverse_transform: Matrix::identity_matrix(4).inverse()
         }
     }
     pub fn new_ring_pattern(a: Color, b: Color) -> Pattern {
         Pattern {
             patterns: PatternType::Ring(RingPattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
-            inverseTransform: Matrix::identity_matrix(4).inverse()
+            inverse_transform: Matrix::identity_matrix(4).inverse()
         }
     }
     pub fn new_checkers_pattern(a: Color, b: Color) -> Pattern {
         Pattern {
             patterns: PatternType::Checkers(CheckersPattern { colors: [a, b] }),
             transform: Matrix::identity_matrix(4),
-            inverseTransform: Matrix::identity_matrix(4).inverse(),
+            inverse_transform: Matrix::identity_matrix(4).inverse(),
         }
     }
     pub fn transform(&mut self,transformation:Matrix){
         self.transform = transformation;
-        self.inverseTransform = self.transform.inverse();
+        self.inverse_transform = self.transform.inverse();
     }
 }
 #[derive(Clone,Debug,PartialEq)]

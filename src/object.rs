@@ -64,7 +64,7 @@ impl Intersectable for Object {
 impl Object {
     pub fn stripe_at_object(&self, pattern: &Pattern, world_point: Tuple) -> Color {
         let object_point = self.get_inverse() * world_point;
-        let pattern_point = &pattern.inverseTransform * object_point;
+        let pattern_point = &pattern.inverse_transform * object_point;
         pattern.pattern_at(pattern_point)
     }
 }
