@@ -1,6 +1,8 @@
+use crate::color::Color;
 use crate::intersections::{Intersectable, Intersections};
 use crate::material::Material;
 use crate::matrix::Matrix;
+use crate::patterns::Pattern;
 use crate::plane::Plane;
 use crate::ray::Ray;
 use crate::sphere::Sphere;
@@ -50,5 +52,12 @@ impl Intersectable for Object {
         let mut w = &self.get_transform().transpose().inverse() * w;
         w.w = 0.;
         w.normalize()
+    }
+}
+impl Object {
+    pub fn stripe_at_object(&self, pattern: &Pattern, world_point: Tuple) -> Color {
+        let object_point = &self.get_transform().inverse() * world_point;
+        let pattern_point = &pattern.transform.inverse() * object_point;
+        pattern.pattern_at(pattern_point)
     }
 }

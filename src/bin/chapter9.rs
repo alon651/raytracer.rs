@@ -17,20 +17,6 @@ fn main() {
     floor.transform = Matrix::identity_matrix(4);
     floor.material.color = Color::new(1., 0.9, 0.9);
     floor.material.specular = 0.;
-    let mut left_wall = Sphere::new();
-    left_wall.transform = Matrix::identity_matrix(4)
-        .translation(0., 0., 5.)
-        .rotate_y(-PI / 4.)
-        .rotate_x(PI / 2.)
-        .scale(10., 0.01, 10.);
-    left_wall.material = floor.material;
-    let mut right_wall = Sphere::new();
-    right_wall.transform = Matrix::identity_matrix(4)
-        .translation(0., 0., 5.)
-        .rotate_y(PI / 4.)
-        .rotate_x(PI / 2.)
-        .scale(10., 0.01, 10.);
-    right_wall.material = floor.material;
     world.push_obj(Object::Plane(floor));
 
     // middle sphere
@@ -65,7 +51,7 @@ fn main() {
         Color::new(1., 1., 1.),
         Tuple::new_point(-10., 10., -10.),
     ));
-    let mut camera = Camera::new(500, 500, PI / 3.);
+    let mut camera = Camera::new(1000, 1000, PI / 3.);
     camera.transform = Matrix::view_transform(
         Tuple::new_point(0., 1.5, -5.),
         Tuple::new_point(0., 1., 0.),
@@ -73,5 +59,5 @@ fn main() {
     );
 
     let canvas = camera.render(world);
-    canvas.save2png("chapter7");
+    canvas.save2png("chapter9");
 }

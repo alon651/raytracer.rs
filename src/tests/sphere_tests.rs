@@ -88,6 +88,6 @@ fn sphere_material_change() {
     let mut s = Sphere::new();
     let mut m = Material::default();
     m.ambient = 1.0;
-    s.material = m;
+    s.material = m.clone();
     assert_eq!(s.material, m)
 }

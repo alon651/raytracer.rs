@@ -5,7 +5,7 @@ use crate::material::lighting;
 use crate::object::Object;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
-use crate::utils::{Precomp, prepare_computations};
+use crate::utils::{prepare_computations, Precomp};
 
 #[derive(Clone, Debug, Default)]
 pub struct World {
@@ -29,6 +29,7 @@ impl World {
             let is_shadow = self.is_shadow(comps.over_point, light);
             c = lighting(
                 comps.obj_ref.get_material(),
+                &comps.obj_ref,
                 light,
                 comps.over_point,
                 comps.eyev,

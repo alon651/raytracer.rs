@@ -1,14 +1,17 @@
 use crate::color::Color;
 use crate::light::Light;
+use crate::object::Object;
+use crate::patterns::Pattern;
 use crate::tuple::Tuple;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Material {
     pub ambient: f32,
     pub diffuse: f32,
     pub specular: f32,
     pub shininess: f32,
     pub color: Color,
+    pub pattern: Option<Pattern>,
 }
 
 impl Material {
@@ -25,6 +28,7 @@ impl Material {
             specular,
             shininess,
             color,
+            pattern: None,
         }
     }
 }
@@ -37,13 +41,19 @@ impl Default for Material {
 
 pub fn lighting(
     material: &Material,
+    object: &Object,
     light: &Light,
     point: Tuple,
     eyev: Tuple,
     normnalv: Tuple,
     in_shadow: bool,
 ) -> Color {
-    let effective_color = material.color * light.intensity;
+    let color = if let Some(pattern) = &material.pattern {
+        object.stripe_at_object(pattern, point)
+    } else {
+        material.color
+    };
+    let effective_color = color * light.intensity;
     let lightv = (light.position - point).normalize();
     let diffuse: Color;
     let specular: Color;
