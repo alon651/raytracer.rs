@@ -63,7 +63,7 @@ fn main() {
     left.material.color = Color::new(1., 0.8, 0.1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
-    world.push_obj(left );
+    world.push_obj(left);
 
     world.lights.push(Light::new(
         Color::new(1., 1., 1.),

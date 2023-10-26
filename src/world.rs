@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+use std::cmp::Ordering::Less;
 use crate::color::Color;
 use crate::intersections::Intersections;
 use crate::light::Light;
@@ -17,10 +19,10 @@ impl World {
     pub(crate) fn intersect(&self, ray: &Ray) -> Intersections {
         let mut res = Intersections::new(vec![]);
         for obj in &self.objects {
-            res = ray.intersect(obj) + res;
+            res += ray.intersect(obj);
         }
         res.intersections
-            .sort_by(|x, y| x.time.partial_cmp(&y.time).unwrap());
+            .sort_by(|x, y| x.time.partial_cmp(&y.time).unwrap_or(Less));
         res
     }
     pub fn shade_hit(&self, comps: Precomp, remaining: usize) -> Color {
@@ -42,7 +44,7 @@ impl World {
         let material = &comps.obj_ref.material;
         if material.reflective > 0. && material.transparency > 0. {
             let reflectance = World::schlick(comps);
-            return surface+reflected*reflectance+refracted*(1.-reflectance)
+            return surface + reflected * reflectance + refracted * (1. - reflectance);
         }
         surface + reflected + refracted
     }
@@ -94,21 +96,22 @@ impl World {
         let cos_t = (1. - sin2_t).sqrt();
         let direction = comps.normalv * (n_ratio * cos_i - cos_t) - comps.eyev * n_ratio;
         let refract_ray = Ray::new(comps.under_point, direction);
-        let color =
-            self.color_at(refract_ray, remaining - 1) * comps.obj_ref.material.transparency;
+        let color = self.color_at(refract_ray, remaining - 1) * comps.obj_ref.material.transparency;
         color
     }
 
-    pub fn schlick(comps:Precomp)->f32{
-        let mut cos =  comps.eyev * comps.normalv;
-        if comps.n1 > comps.n2{
+    pub fn schlick(comps: Precomp) -> f32 {
+        let mut cos = comps.eyev * comps.normalv;
+        if comps.n1 > comps.n2 {
             let n = comps.n1 / comps.n2;
-            let sin2_t = n*n* (1. - cos*cos);
-            if sin2_t > 1.{return 1.0}
+            let sin2_t = n * n * (1. - cos * cos);
+            if sin2_t > 1. {
+                return 1.0;
+            }
             let cos_t = (1. - sin2_t).sqrt();
             cos = cos_t;
         };
-        let r0 = ((comps.n1 - comps.n2)/(comps.n1+comps.n2)).powi(2);
-        r0+(1.-r0)* (1.-cos).powi(5)
+        let r0 = ((comps.n1 - comps.n2) / (comps.n1 + comps.n2)).powi(2);
+        r0 + (1. - r0) * (1. - cos).powi(5)
     }
 }

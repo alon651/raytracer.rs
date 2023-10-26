@@ -1,7 +1,7 @@
 use crate::matrix::Matrix;
+use crate::object::Object;
 use crate::ray::{self, Ray};
 use crate::{tuple::Tuple, utils::cmp_f32};
-use crate::object::Object;
 
 #[test]
 fn test_ray() {

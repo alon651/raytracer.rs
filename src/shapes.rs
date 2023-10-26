@@ -1,10 +1,10 @@
-pub mod sphere;
 pub mod plane;
+pub mod sphere;
 
-use sphere::Sphere;
-use plane::Plane;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
+use plane::Plane;
+use sphere::Sphere;
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum Shape {
@@ -20,14 +20,13 @@ impl Shape {
             }
             Shape::Plane(ref shape) => {
                 return shape.local_intersect(ray);
-
             }
         }
     }
 }
 
-impl Shape{
-    pub fn normal_at(&self,point:Tuple)->Tuple{
+impl Shape {
+    pub fn normal_at(&self, point: Tuple) -> Tuple {
         let w = match self {
             Shape::Sphere(ref s) => s.normal_at(point),
             Shape::Plane(ref p) => p.normal_at(point),

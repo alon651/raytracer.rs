@@ -1,6 +1,5 @@
-use std::rc::Rc;
 use crate::object::Object;
-
+use std::rc::Rc;
 
 #[derive(Debug)]
 pub struct Intersections {
@@ -12,7 +11,6 @@ pub struct Intersection {
     pub object_ref: Rc<Object>,
     pub time: f32,
 }
-
 
 impl Intersections {
     pub fn new(intersections: Vec<Intersection>) -> Intersections {
@@ -43,5 +41,11 @@ impl std::ops::Add<Intersections> for Intersections {
         Intersections {
             intersections: [self.intersections, rhs.intersections].concat(),
         }
+    }
+}
+
+impl std::ops::AddAssign for Intersections{
+    fn add_assign(&mut self, mut rhs: Self) {
+        self.intersections.append(&mut rhs.intersections)
     }
 }

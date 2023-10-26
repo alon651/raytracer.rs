@@ -1,8 +1,8 @@
-use std::rc::Rc;
 use crate::intersections::{Intersection, Intersections};
 use crate::object::Object;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
+use std::rc::Rc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 pub const EPSILON: f32 = 0.0012;

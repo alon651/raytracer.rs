@@ -2,11 +2,11 @@ use crate::camera::Camera;
 use crate::color::Color;
 use crate::light::Light;
 use crate::matrix::Matrix;
+use crate::object::Object;
 use crate::object::Object::Sphere;
 use crate::tuple::Tuple;
 use crate::world::World;
 use std::f32::consts::PI;
-use crate::object::Object;
 
 #[test]
 fn creating_a_camera() {

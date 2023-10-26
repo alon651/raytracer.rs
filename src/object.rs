@@ -1,25 +1,24 @@
-use std::rc::Rc;
 use crate::color::Color;
 use crate::intersections::{Intersection, Intersections};
 use crate::material::Material;
 use crate::matrix::Matrix;
 use crate::patterns::Pattern;
 use crate::ray::Ray;
-use crate::tuple::Tuple;
-use crate::shapes::Shape;
-use crate::shapes::sphere::Sphere;
 use crate::shapes::plane::Plane;
+use crate::shapes::sphere::Sphere;
+use crate::shapes::Shape;
+use crate::tuple::Tuple;
+use std::rc::Rc;
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct Object {
-    shape:Shape,
+    shape: Shape,
     pub transform: Matrix,
     pub material: Material,
     pub inverse: Matrix,
 }
 
 impl Object {
-
     pub(crate) fn local_intersect(&self, ray: &Ray) -> Intersections {
         match self.shape {
             Shape::Sphere(ref s) => s.local_intersect(ray),
@@ -27,24 +26,24 @@ impl Object {
         };
         let v = self.shape.intersect(ray);
         let mut res = Intersections::new(vec![]);
-        for i in  v{
-            res.intersections.push(Intersection{
+        for i in v {
+            res.intersections.push(Intersection {
                 object_ref: Rc::new(self.clone()),
                 time: i,
             })
         }
         res
     }
-    pub fn new_sphere() ->Self{
-        Object{
+    pub fn new_sphere() -> Self {
+        Object {
             shape: Shape::Sphere(Sphere::new()),
             transform: Matrix::identity_matrix(4).inverse(),
             material: Default::default(),
             inverse: Matrix::identity_matrix(4).inverse(),
         }
     }
-    pub fn new_plane() ->Self{
-        Object{
+    pub fn new_plane() -> Self {
+        Object {
             shape: Shape::Plane(Plane::new()),
             transform: Matrix::identity_matrix(4).inverse(),
             material: Default::default(),
@@ -52,9 +51,8 @@ impl Object {
         }
     }
     pub fn set_transform(&mut self, t: Matrix) {
-            self.transform = t.clone();
-            self.inverse = t.inverse();
-
+        self.transform = t.clone();
+        self.inverse = t.inverse();
     }
 
     pub(crate) fn normal_at(&self, point: Tuple) -> Tuple {
