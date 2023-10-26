@@ -1,4 +1,5 @@
-use crate::intersections::{Intersectable, Intersection, Intersections};
+use std::rc::Rc;
+use crate::intersections::{Intersection, Intersections};
 use crate::object::Object;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
@@ -18,7 +19,7 @@ pub fn generate_id() -> usize {
 #[derive(Debug, Clone)]
 pub struct Precomp {
     pub t: f32,
-    pub obj_ref: Box<Object>,
+    pub obj_ref: Rc<Object>,
     pub point: Tuple,
     pub eyev: Tuple,
     pub normalv: Tuple,

@@ -1,11 +1,15 @@
+use std::rc::Rc;
 use crate::color::Color;
-use crate::intersections::{Intersectable, Intersections};
+use crate::intersections::{Intersection, Intersections};
 use crate::material::Material;
 use crate::matrix::Matrix;
 use crate::patterns::Pattern;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
 use crate::shapes::Shape;
+use crate::shapes::sphere::Sphere;
+use crate::shapes::plane::Plane;
+
 #[derive(PartialEq, Debug, Clone)]
 pub struct Object {
     shape:Shape,
@@ -20,10 +24,34 @@ impl Object {
         match self.shape {
             Shape::Sphere(ref s) => s.local_intersect(ray),
             Shape::Plane(ref p) => p.local_intersect(ray),
+        };
+        let v = self.shape.intersect(ray);
+        let mut res = Intersections::new(vec![]);
+        for i in  v{
+            res.intersections.push(Intersection{
+                object_ref: Rc::new(self.clone()),
+                time: i,
+            })
+        }
+        res
+    }
+    pub fn new_sphere() ->Self{
+        Object{
+            shape: Shape::Sphere(Sphere::new()),
+            transform: Matrix::identity_matrix(4).inverse(),
+            material: Default::default(),
+            inverse: Matrix::identity_matrix(4).inverse(),
         }
     }
-
-    fn set_transform(&mut self, t: Matrix) {
+    pub fn new_plane() ->Self{
+        Object{
+            shape: Shape::Plane(Plane::new()),
+            transform: Matrix::identity_matrix(4).inverse(),
+            material: Default::default(),
+            inverse: Matrix::identity_matrix(4).inverse(),
+        }
+    }
+    pub fn set_transform(&mut self, t: Matrix) {
             self.transform = t.clone();
             self.inverse = t.inverse();
 
@@ -31,12 +59,7 @@ impl Object {
 
     pub(crate) fn normal_at(&self, point: Tuple) -> Tuple {
         let point = &self.inverse * point;
-        let w = match self.shape {
-            Shape::Sphere(ref s) => s.normal_at(point),
-            Shape::Plane(ref p) => p.normal_at(point),
-        };
-
-        let mut w = &self.inverse.transpose() * w;
+        let mut w = &self.inverse.transpose() * self.shape.normal_at(point);
         w.w = 0.;
         w.normalize()
     }

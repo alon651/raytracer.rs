@@ -1,5 +1,5 @@
 use crate::color::Color;
-use crate::intersections::{Intersectable, Intersections};
+use crate::intersections::Intersections;
 use crate::light::Light;
 use crate::material::lighting;
 use crate::object::Object;

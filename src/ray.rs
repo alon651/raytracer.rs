@@ -1,4 +1,4 @@
-use crate::intersections::{Intersectable, Intersections};
+use crate::intersections::{Intersections};
 use crate::matrix::Matrix;
 use crate::object::Object;
 use crate::tuple::Tuple;

@@ -1,9 +1,7 @@
-use crate::intersections::{self, Intersectable, Intersection, Intersections};
 use crate::matrix::Matrix;
 use crate::ray::{self, Ray};
-use crate::sphere::Sphere;
 use crate::{tuple::Tuple, utils::cmp_f32};
-use std::any::Any;
+use crate::object::Object;
 
 #[test]
 fn test_ray() {
@@ -28,7 +26,7 @@ fn test_intersections() {
         origin: Tuple::new_point(0.0, 0.0, -5.0),
         direction: Tuple::new_vector(0.0, 0.0, 1.0),
     };
-    let s = Sphere::new();
+    let s = Object::new_sphere();
     let xs = {
         let ref this = r;
         let other = &s;
@@ -44,7 +42,7 @@ fn test_intersect_at_a_tangent() {
         origin: Tuple::new_point(0.0, 1.0, -5.0),
         direction: Tuple::new_vector(0.0, 0.0, 1.0),
     };
-    let s = Sphere::new();
+    let s = Object::new_sphere();
     let xs = {
         let ref this = r;
         let other = &s;

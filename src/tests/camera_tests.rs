@@ -1,13 +1,12 @@
 use crate::camera::Camera;
 use crate::color::Color;
-use crate::intersections::Intersectable;
 use crate::light::Light;
 use crate::matrix::Matrix;
 use crate::object::Object::Sphere;
-use crate::sphere;
 use crate::tuple::Tuple;
 use crate::world::World;
 use std::f32::consts::PI;
+use crate::object::Object;
 
 #[test]
 fn creating_a_camera() {
@@ -38,15 +37,15 @@ fn ray_trough_center() {
     assert_eq!(r.direction, Tuple::new_vector(0., 0., -1.));
 }
 fn default_world() -> World {
-    let mut s1 = sphere::Sphere::new();
+    let mut s1 = Object::new_sphere();
     s1.material.color = Color::new(0.8, 1.0, 0.6);
     s1.material.diffuse = 0.7;
     s1.material.specular = 0.2;
-    let mut s2 = sphere::Sphere::new();
+    let mut s2 = Object::new_sphere();
     s2.set_transform(Matrix::identity_matrix(4).scale(0.5, 0.5, 0.5));
     let l1 = Light::new(Color::new(1., 1., 1.), Tuple::new_point(-10., 10., -10.));
     World {
-        objects: vec![Sphere(s1), Sphere(s2)],
+        objects: vec![s1, s2],
         lights: vec![l1],
     }
 }

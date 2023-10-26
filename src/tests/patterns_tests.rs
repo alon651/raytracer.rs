@@ -1,11 +1,9 @@
 use crate::color::Color;
-use crate::intersections::Intersectable;
 use crate::light::Light;
 use crate::material::{lighting, Material};
 use crate::matrix::Matrix;
 use crate::object::Object::Sphere;
 use crate::patterns::Pattern;
-use crate::sphere;
 use crate::tuple::Tuple;
 
 static BLACK: Color = Color {

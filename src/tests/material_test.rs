@@ -2,7 +2,6 @@ use crate::color::Color;
 use crate::light::Light;
 use crate::material::{lighting, Material};
 use crate::object::Object;
-use crate::sphere::Sphere;
 use crate::tuple::Tuple;
 
 #[test]
@@ -15,7 +14,7 @@ fn eye_between_light_and_surface() {
     let light = Light::new(Color::new(1., 1., 1.), Tuple::new_point(0., 0., -10.));
     let result = lighting(
         &m,
-        &Object::Sphere(Sphere::new()),
+        &Object::new_sphere(),
         &light,
         position,
         eyev,
@@ -35,7 +34,7 @@ fn eye_between_light_and_surface_offset45() {
     let light = Light::new(Color::new(1., 1., 1.), Tuple::new_point(0., 0., -10.));
     let result = lighting(
         &m,
-        &Object::Sphere(Sphere::new()),
+        &Object::Sphere(Object::new_sphere()),
         &light,
         position,
         eyev,
@@ -55,7 +54,7 @@ fn lighting_with_surface_in_the_shadow() {
     let light = Light::new(Color::new(1., 1., 1.), Tuple::new_point(0., 0., -10.));
     let result = lighting(
         &m,
-        &Object::Sphere(Sphere::new()),
+        &Object::Sphere(Object::new_sphere()),
         &light,
         position,
         eyev,

@@ -1,5 +1,4 @@
-use crate::intersections::{Intersections};
-
+use crate ::utils::EPSILON;
 use crate::ray::Ray;
 use crate::tuple::Tuple;
 
@@ -10,16 +9,12 @@ pub struct Plane {
 impl Plane {
 
 
-    pub(crate) fn local_intersect(&self, ray: &Ray) -> Intersections {
-        todo!();
-        // if (ray.direction.y).abs() < EPSILON {
-        //     return Intersections::new(vec![]);
-        // }
-        // let t = -ray.origin.y / ray.direction.y;
-        // Intersections::new(vec![Intersection {
-        //     object_ref: Box::new(()),
-        //     time: t,
-        // }])
+    pub(crate) fn local_intersect(&self, ray: &Ray) -> Vec<f32> {
+        if (ray.direction.y).abs() < EPSILON {
+            return vec![];
+        }
+        let t = -ray.origin.y / ray.direction.y;
+        vec![t]
     }
 
 
