@@ -25,7 +25,7 @@ fn main() {
 
     let ring2 = Pattern::new_checkers_pattern(Color::new(1., 1., 1.), Color::new(0., 0., 0.));
     floor.material.pattern = Some(ring2);
-    floor.material.reflective = 0.5;
+    floor.material.reflective = 0.7;
     world.push_obj(floor);
 
     // middle sphere
@@ -51,7 +51,7 @@ fn main() {
     right.material.specular = 0.3;
     right.material.transparency = 1.;
     right.material.refractive_index = 1.5;
-    right.material.reflective = 1.;
+    // right.material.reflective = 1.;
     world.push_obj(right);
     //left sphere
     let mut left = Object::new_sphere();
@@ -63,7 +63,7 @@ fn main() {
     left.material.color = Color::new(1., 0.8, 0.1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;
-    world.push_obj(left );
+    world.push_obj(left);
 
     world.lights.push(Light::new(
         Color::new(1., 1., 1.),
