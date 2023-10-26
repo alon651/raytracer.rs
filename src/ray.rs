@@ -1,4 +1,4 @@
-use crate::intersections::{Intersectable, Intersections};
+use crate::intersections::{Intersections};
 use crate::matrix::Matrix;
 use crate::object::Object;
 use crate::tuple::Tuple;
@@ -13,7 +13,7 @@ impl Ray {
         self.origin + self.direction * t
     }
     pub fn intersect<'a>(&'a self, other: &'a Object) -> Intersections {
-        let ray2 = self.transform(other.get_inverse().clone());
+        let ray2 = self.transform(other.inverse.clone());
         other.local_intersect(&ray2)
     }
     pub fn transform(&self, transformation: Matrix) -> Ray {

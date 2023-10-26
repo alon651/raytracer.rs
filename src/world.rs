@@ -1,5 +1,5 @@
 use crate::color::Color;
-use crate::intersections::{Intersectable, Intersections};
+use crate::intersections::Intersections;
 use crate::light::Light;
 use crate::material::lighting;
 use crate::object::Object;
@@ -28,7 +28,7 @@ impl World {
         self.lights.iter().for_each(|light| {
             let is_shadow = self.is_shadow(comps.over_point, light);
             surface = lighting(
-                comps.obj_ref.get_material(),
+                &comps.obj_ref.material,
                 &comps.obj_ref,
                 light,
                 comps.over_point,
@@ -39,7 +39,7 @@ impl World {
         });
         let reflected = self.reflected_color(comps.clone(), remaining);
         let refracted = self.refracted_color(comps.clone(), remaining);
-        let material = comps.obj_ref.get_material();
+        let material = &comps.obj_ref.material;
         if material.reflective > 0. && material.transparency > 0. {
             let reflectance = World::schlick(comps);
             return surface+reflected*reflectance+refracted*(1.-reflectance)
@@ -73,15 +73,15 @@ impl World {
         false
     }
     pub fn reflected_color(&self, comps: Precomp, remaining: usize) -> Color {
-        if comps.obj_ref.get_material().reflective == 0. || remaining <= 0 {
+        if comps.obj_ref.material.reflective == 0. || remaining <= 0 {
             return Color::new(0., 0., 0.);
         }
         let reflect_ray = Ray::new(comps.over_point, comps.reflectv);
         let color = self.color_at(reflect_ray, remaining - 1);
-        color * comps.obj_ref.get_material().reflective
+        color * comps.obj_ref.material.reflective
     }
     pub fn refracted_color(&self, comps: Precomp, remaining: usize) -> Color {
-        if comps.obj_ref.get_material().transparency == 0. || remaining == 0 {
+        if comps.obj_ref.material.transparency == 0. || remaining == 0 {
             return Color::new(0., 0., 0.);
         }
         //calculate angel
@@ -95,7 +95,7 @@ impl World {
         let direction = comps.normalv * (n_ratio * cos_i - cos_t) - comps.eyev * n_ratio;
         let refract_ray = Ray::new(comps.under_point, direction);
         let color =
-            self.color_at(refract_ray, remaining - 1) * comps.obj_ref.get_material().transparency;
+            self.color_at(refract_ray, remaining - 1) * comps.obj_ref.material.transparency;
         color
     }
 

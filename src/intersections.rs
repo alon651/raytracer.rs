@@ -1,7 +1,6 @@
-use crate::material::Material;
+use std::rc::Rc;
 use crate::object::Object;
-use crate::tuple::Tuple;
-use crate::{matrix::Matrix, ray::Ray};
+
 
 #[derive(Debug)]
 pub struct Intersections {
@@ -10,19 +9,10 @@ pub struct Intersections {
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct Intersection {
-    pub object_ref: Box<Object>,
+    pub object_ref: Rc<Object>,
     pub time: f32,
 }
 
-pub trait Intersectable {
-    fn get_transform(&self) -> &Matrix;
-    fn get_inverse(&self) -> &Matrix;
-    ///this function doesn't apply transformation, please use ray.intersect() instead
-    fn local_intersect(&self, ray: &Ray) -> Intersections;
-    fn get_material(&self) -> &Material;
-    fn set_transform(&mut self, t: Matrix);
-    fn normal_at(&self, point: Tuple) -> Tuple;
-}
 
 impl Intersections {
     pub fn new(intersections: Vec<Intersection>) -> Intersections {

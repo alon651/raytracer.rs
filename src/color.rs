@@ -1,4 +1,5 @@
 use crate::tuple::Tuple;
+
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Color {
     pub(crate) color_tuple: Tuple,

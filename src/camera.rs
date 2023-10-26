@@ -20,10 +20,10 @@ pub struct Camera {
 impl Camera {
     pub fn new(hsize: usize, vsize: usize, field_of_view: f32) -> Camera {
         let half_view = (field_of_view / 2.).tan();
-        let aspect = (hsize as f32 / vsize as f32);
+        let aspect = hsize as f32 / vsize as f32;
         let half_width: f32;
         let half_height: f32;
-        if (aspect >= 1.) {
+        if aspect >= 1. {
             half_width = half_view;
             half_height = half_view / aspect;
         } else {
