@@ -69,12 +69,8 @@ impl Intersectable for Sphere {
         self.inverse = t.inverse();
     }
     fn normal_at(&self, point: Tuple) -> Tuple {
-        let object_point = &self.inverse * point;
-        let object_normal = object_point - Tuple::new_point(0.0, 0.0, 0.0);
+        let object_normal = point - Tuple::new_point(0.0, 0.0, 0.0);
         object_normal.normalize()
-        // let mut world_normal = &self.transform.transpose().inverse() * object_point;
-        // world_normal.w = 0.0; //zero the w of the normal to negate size bugs(not elegant but does the job)
-        // world_normal.normalize()
     }
 }
 

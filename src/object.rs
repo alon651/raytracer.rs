@@ -51,6 +51,7 @@ impl Intersectable for Object {
     }
 
     fn normal_at(&self, point: Tuple) -> Tuple {
+        let point = self.get_inverse() * point;
         let w = match self {
             Object::Sphere(ref s) => s.normal_at(point),
             Object::Plane(ref p) => p.normal_at(point),
