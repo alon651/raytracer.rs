@@ -10,7 +10,7 @@ use crate::utils::EPSILON;
 pub struct Plane {
     pub material: Material,
     transform: Matrix,
-    inverse:Matrix,
+    inverse: Matrix,
 }
 
 impl Intersectable for Plane {
@@ -52,7 +52,7 @@ impl Plane {
         Plane {
             transform: Matrix::identity_matrix(4),
             material: Material::default(),
-            inverse: Matrix::identity_matrix(4).inverse()
+            inverse: Matrix::identity_matrix(4).inverse(),
         }
     }
 }

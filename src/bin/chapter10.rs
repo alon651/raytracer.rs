@@ -25,7 +25,10 @@ fn main() {
     floor.set_transform(Matrix::identity_matrix(4));
     floor.material.color = Color::new(1., 0.9, 0.9);
     floor.material.specular = 0.;
-    floor.material.pattern = Some(ring.clone());
+
+    let ring2 = Pattern::new_checkers_pattern(Color::new(1., 1., 1.), Color::new(0., 0., 0.));
+    floor.material.pattern = Some(ring2);
+    floor.material.reflective = 0.5;
     world.push_obj(Object::Plane(floor));
 
     // middle sphere
@@ -34,6 +37,7 @@ fn main() {
     middle.material.color = Color::new(0.1, 1., 0.5);
     middle.material.diffuse = 0.7;
     middle.material.specular = 0.3;
+    middle.material.reflective = 0.1;
     middle.material.pattern = Some(ring.clone());
     world.push_obj(Object::Sphere(middle));
 
@@ -44,9 +48,13 @@ fn main() {
             .translation(1.5, 0.5, -0.5)
             .scale(0.5, 0.5, 0.5),
     );
-    right.material.color = Color::new(0.5, 1., 0.1);
-    right.material.diffuse = 0.7;
+    // right.material.color = Color::new(0.5, 1., 0.1);
+    right.material.color = Color::new(0., 0., 0.);
+    right.material.diffuse = 0.;
     right.material.specular = 0.3;
+    right.material.transparency = 1.;
+    right.material.refractive_index = 1.5;
+    right.material.reflective = 1.;
     world.push_obj(Object::Sphere(right));
     //left sphere
     let mut left = Sphere::new();

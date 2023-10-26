@@ -30,9 +30,11 @@ fn main() {
 
     //right sphere
     let mut right = Sphere::new();
-    right.set_transform(Matrix::identity_matrix(4)
-        .translation(1.5, 0.5, -0.5)
-        .scale(0.5, 0.5, 0.5));
+    right.set_transform(
+        Matrix::identity_matrix(4)
+            .translation(1.5, 0.5, -0.5)
+            .scale(0.5, 0.5, 0.5),
+    );
     right.material.color = Color::new(0.5, 1., 0.1);
     right.material.diffuse = 0.7;
     right.material.specular = 0.3;
@@ -40,9 +42,11 @@ fn main() {
 
     //left sphere
     let mut left = Sphere::new();
-    left.set_transform(Matrix::identity_matrix(4)
-        .translation(-1.5, 0.33, -0.75)
-        .scale(0.33, 0.33, 0.33));
+    left.set_transform(
+        Matrix::identity_matrix(4)
+            .translation(-1.5, 0.33, -0.75)
+            .scale(0.33, 0.33, 0.33),
+    );
     left.material.color = Color::new(1., 0.8, 0.1);
     left.material.diffuse = 0.7;
     left.material.specular = 0.3;

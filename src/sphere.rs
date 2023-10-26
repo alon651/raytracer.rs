@@ -27,7 +27,7 @@ impl Sphere {
             id: generate_id(),
             transform: Matrix::identity_matrix(4),
             material: Material::default(),
-            inverse: Matrix::identity_matrix(4).inverse()
+            inverse: Matrix::identity_matrix(4).inverse(),
         }
     }
 }

@@ -15,7 +15,7 @@ fn creating_a_camera() {
     let vsize = 120;
     let field_of_view = PI / 2.;
     let c = Camera::new(hsize, vsize, field_of_view);
-    assert_eq!(c.transform, Matrix::identity_matrix(4))
+    assert_eq!(*c.get_transform(), Matrix::identity_matrix(4))
 }
 
 #[test]
@@ -57,7 +57,7 @@ fn render_test() {
     let from = Tuple::new_point(0., 0., -5.);
     let to = Tuple::new_point(0., 0., 0.);
     let up = Tuple::new_vector(0., 1., 0.);
-    c.transform = Matrix::view_transform(from, to, up);
+    c.set_transform(Matrix::view_transform(from, to, up));
     let im = c.render(w);
     let p = im.get_pixel(5, 5);
     println!("{p:?}");

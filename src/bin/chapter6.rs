@@ -53,7 +53,15 @@ fn main() {
                 let point = ray.position(hit.time);
                 let normal = shape.normal_at(point);
                 let eye = -ray.direction;
-                let color = lighting(shape.get_material(),&shape, &light, point, eye, normal, false);
+                let color = lighting(
+                    shape.get_material(),
+                    &shape,
+                    &light,
+                    point,
+                    eye,
+                    normal,
+                    false,
+                );
                 // Lock the Mutex to access the Canvas
                 let mut canvas_lock = canvas.lock().unwrap();
                 canvas_lock.set_pixel(x, y, color.get_rgb());

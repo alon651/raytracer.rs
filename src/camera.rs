@@ -14,7 +14,7 @@ pub struct Camera {
     pub pixel_size: f32,
     half_height: f32,
     half_width: f32,
-    inverse:Matrix,
+    inverse: Matrix,
 }
 
 impl Camera {
@@ -41,7 +41,7 @@ impl Camera {
             pixel_size: (half_width * 2.) / hsize as f32,
             half_width,
             half_height,
-            inverse: Matrix::identity_matrix(4).inverse()
+            inverse: Matrix::identity_matrix(4).inverse(),
         }
     }
 
@@ -66,7 +66,7 @@ impl Camera {
         y_range.par_iter().for_each(|&y| {
             x_range.par_iter().for_each(|&x| {
                 let r = self.ray_for_pixel(x, y);
-                let c = w.color_at(r);
+                let c = w.color_at(r, 5);
                 let mut canvas_lock = canvas.lock().unwrap();
                 canvas_lock.set_pixel(x, y, c.get_rgb());
             })
@@ -75,17 +75,19 @@ impl Camera {
         // y_range.iter().for_each(|&y| {
         //     x_range.iter().for_each(|&x| {
         //         let r = self.ray_for_pixel(x, y);
-        //         let c = w.color_at(r);
+        //         let c = w.color_at(r,5);
         //         let mut canvas_lock = canvas.lock().unwrap();
         //         canvas_lock.set_pixel(x, y, c.get_rgb());
         //     })
         // });
 
-
         canvas.into_inner().unwrap()
     }
-    pub fn set_transform(&mut self, t:Matrix){
+    pub fn set_transform(&mut self, t: Matrix) {
         self.inverse = t.inverse();
         self.transform = t;
+    }
+    pub fn get_transform(&self) -> &Matrix {
+        &self.transform
     }
 }

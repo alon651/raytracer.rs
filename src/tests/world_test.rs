@@ -1,15 +1,14 @@
-use crate::camera::Camera;
 use crate::color::Color;
 use crate::intersections::{Intersectable, Intersection, Intersections};
 use crate::light::Light;
 use crate::matrix::Matrix;
 use crate::object::Object::Sphere;
 use crate::ray::Ray;
+use crate::sphere;
 use crate::tuple::Tuple;
 use crate::utils::prepare_computations;
 use crate::world::World;
-use crate::{ray, sphere};
-use std::f32::consts::PI;
+
 fn default_world() -> World {
     let mut s1 = sphere::Sphere::new();
     s1.material.color = Color::new(0.8, 1.0, 0.6);
@@ -47,7 +46,7 @@ fn precomputing() {
         time: 4.0,
         object_ref: Box::new(shape),
     };
-    let p = prepare_computations(&i, r);
+    let p = prepare_computations(&i, r, &Intersections::new(vec![i.clone()]));
     assert_eq!(i.time, p.t);
     assert_eq!(p.point, Tuple::new_point(0.0, 0.0, -1.0));
     assert_eq!(p.eyev, Tuple::new_vector(0.0, 0.0, -1.0));
@@ -58,7 +57,7 @@ fn precomputing() {
 fn ray_misses() {
     let w = default_world();
     let r = Ray::new(Tuple::new_point(0., 0., -5.), Tuple::new_vector(0., 1., 0.));
-    let c = w.color_at(r);
+    let c = w.color_at(r, 1);
     assert_eq!(c, Color::new(0., 0., 0.));
 }
 
@@ -66,7 +65,7 @@ fn ray_misses() {
 fn ray_hits() {
     let w = default_world();
     let r = Ray::new(Tuple::new_point(0., 0., -5.), Tuple::new_vector(0., 0., 1.));
-    let c = w.color_at(r);
+    let c = w.color_at(r, 1);
     assert_eq!(c, Color::new(0.38066125, 0.4758265, 0.28549594));
 }
 #[test]
@@ -89,7 +88,7 @@ fn intersection_behind_ray() {
         Tuple::new_point(0., 0., 0.75),
         Tuple::new_vector(0., 0., -1.),
     );
-    let c = w.color_at(r);
+    let c = w.color_at(r, 1);
     debug_assert_eq!(c, c2);
 }
 
@@ -132,7 +131,7 @@ pub fn intersection_in_shadow() {
     let binding = w.intersect(&r);
     let i = binding.hits().unwrap();
     println!("{i:?}");
-    let comps = prepare_computations(&i, r);
-    let c = w.shade_hit(comps);
+    let comps = prepare_computations(i, r, &Intersections::new(vec![i.clone()]));
+    let c = w.shade_hit(comps, 1);
     println!("{c:?}")
 }

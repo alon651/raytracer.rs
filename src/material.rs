@@ -12,6 +12,9 @@ pub struct Material {
     pub shininess: f32,
     pub color: Color,
     pub pattern: Option<Pattern>,
+    pub reflective: f32,
+    pub transparency: f32,
+    pub refractive_index: f32,
 }
 
 impl Material {
@@ -21,6 +24,9 @@ impl Material {
         specular: f32,
         shininess: f32,
         color: Color,
+        reflective: f32,
+        transparency: f32,
+        refractive_index: f32,
     ) -> Material {
         Material {
             ambient,
@@ -29,13 +35,16 @@ impl Material {
             shininess,
             color,
             pattern: None,
+            reflective,
+            transparency,
+            refractive_index,
         }
     }
 }
 
 impl Default for Material {
     fn default() -> Self {
-        Material::new(0.1, 0.9, 0.9, 200.0, Color::new(1., 1., 1.))
+        Material::new(0.1, 0.9, 0.9, 200.0, Color::new(1., 1., 1.), 0., 0., 1.)
     }
 }
 
