@@ -7,8 +7,8 @@ use ray_tracer::light::Light;
 use ray_tracer::matrix::Matrix;
 use ray_tracer::object::Object;
 use ray_tracer::patterns::Pattern;
-use ray_tracer::plane::Plane;
-use ray_tracer::sphere::Sphere;
+use ray_tracer::shapes::Plane;
+use ray_tracer::shapes::Sphere;
 use ray_tracer::tuple::Tuple;
 use ray_tracer::world::World;
 

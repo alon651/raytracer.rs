@@ -60,7 +60,7 @@ pub fn prepare_computations(intersection: &Intersection, ray: Ray, xs: &Intersec
     for i in &xs.intersections {
         if i == hit {
             if let Some(obj) = containers.last() {
-                p.n1 = obj.get_material().refractive_index;
+                p.n1 = obj.material.refractive_index;
             }
         }
         if containers.contains(&i.object_ref.as_ref()) {
@@ -75,7 +75,7 @@ pub fn prepare_computations(intersection: &Intersection, ray: Ray, xs: &Intersec
         }
         if i == hit {
             if let Some(obj) = containers.last() {
-                p.n2 = obj.get_material().refractive_index;
+                p.n2 = obj.material.refractive_index;
             }
         }
     }
