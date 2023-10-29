@@ -74,7 +74,7 @@ impl World {
         false
     }
     pub fn reflected_color(&self, comps: Precomp, remaining: usize) -> Color {
-        if comps.obj_ref.material.reflective == 0. || remaining <= 0 {
+        if comps.obj_ref.material.reflective == 0. || remaining == 0 {
             return Color::new(0., 0., 0.);
         }
         let reflect_ray = Ray::new(comps.over_point, comps.reflectv);
@@ -112,5 +112,11 @@ impl World {
         };
         let r0 = ((comps.n1 - comps.n2) / (comps.n1 + comps.n2)).powi(2);
         r0 + (1. - r0) * (1. - cos).powi(5)
+    }
+    pub fn new()->World{
+        World{
+            objects: vec![],
+            lights: vec![],
+        }
     }
 }

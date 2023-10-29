@@ -90,4 +90,20 @@ impl Camera {
     pub fn get_transform(&self) -> &Matrix {
         &self.transform
     }
+
+
+    ///rotate the camera by x,y,z units around the x,y,z axis
+    pub fn rotate(&mut self,x:f32, y:f32, z:f32){
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).rotate_x(x));
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).rotate_y(y));
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).rotate_z(z));
+    }
+    ///move the camera by x,y,z units in the x,y,z axis
+    pub fn move_by(&mut self, x:f32, y:f32, z:f32){
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).translation(x,y,z));
+    }
+    ///set the camera to the point "from" in such a way that it looks at the point "to" and the way up is the vector "up"
+    pub fn set_view(&mut self,from: Tuple, to: Tuple, up: Tuple){
+        self.set_transform(Matrix::view_transform(from,to,up))
+    }
 }

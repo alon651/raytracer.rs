@@ -31,6 +31,28 @@ impl Object {
         }
         res
     }
+
+    pub(crate) fn set_transform(&mut self, t: Matrix) {
+        self.transform = t.clone();
+        self.inverse = t.inverse();
+    }
+
+    pub(crate) fn normal_at(&self, point: Tuple) -> Tuple {
+        let point = &self.inverse * point;
+        let mut w = &self.inverse.transpose() * self.shape.normal_at(point);
+        w.w = 0.;
+        w.normalize()
+    }
+}
+impl Object {
+    pub fn stripe_at_object(&self, pattern: &Pattern, world_point: Tuple) -> Color {
+        let object_point = &self.inverse * world_point;
+        let pattern_point = &pattern.inverse_transform * object_point;
+        pattern.pattern_at(pattern_point)
+    }
+}
+
+impl Object{
     pub fn new_sphere() -> Self {
         Object {
             shape: Shape::Sphere(Sphere::new()),
@@ -55,22 +77,18 @@ impl Object {
             inverse: Matrix::identity_matrix(4).inverse(),
         }
     }
-    pub fn set_transform(&mut self, t: Matrix) {
-        self.transform = t.clone();
-        self.inverse = t.inverse();
+    ///resize the object by x,y,z units in the x,y,z axis
+    pub fn resize(&mut self,x:f32, y:f32, z:f32){
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).scale(x,y,z));
     }
-
-    pub(crate) fn normal_at(&self, point: Tuple) -> Tuple {
-        let point = &self.inverse * point;
-        let mut w = &self.inverse.transpose() * self.shape.normal_at(point);
-        w.w = 0.;
-        w.normalize()
+    ///rotate the object by x,y,z units around the x,y,z axis
+    pub fn rotate(&mut self,x:f32, y:f32, z:f32){
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).rotate_x(x));
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).rotate_y(y));
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).rotate_z(z));
     }
-}
-impl Object {
-    pub fn stripe_at_object(&self, pattern: &Pattern, world_point: Tuple) -> Color {
-        let object_point = &self.inverse * world_point;
-        let pattern_point = &pattern.inverse_transform * object_point;
-        pattern.pattern_at(pattern_point)
+    ///move the object by x,y,z units in the x,y,z axis
+    pub fn move_by(&mut self, x:f32, y:f32, z:f32){
+        self.set_transform(&self.transform*&Matrix::identity_matrix(4).translation(x,y,z));
     }
 }

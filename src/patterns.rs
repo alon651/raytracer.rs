@@ -50,6 +50,22 @@ impl Pattern {
         self.transform = transformation;
         self.inverse_transform = self.transform.inverse();
     }
+
+    ///resize the pattern by x,y,z units in the x,y,z axis
+    pub fn resize(&mut self,x:f32, y:f32, z:f32){
+        self.transform(&self.transform*&Matrix::identity_matrix(4).scale(x,y,z));
+    }
+    ///rotate the pattern by x,y,z units around the x,y,z axis
+    pub fn rotate(&mut self,x:f32, y:f32, z:f32){
+        self.transform(&self.transform*&Matrix::identity_matrix(4).rotate_x(x));
+        self.transform(&self.transform*&Matrix::identity_matrix(4).rotate_y(y));
+        self.transform(&self.transform*&Matrix::identity_matrix(4).rotate_z(z));
+    }
+    ///move the pattern by x,y,z units in the x,y,z axis
+    pub fn move_by(&mut self, x:f32, y:f32, z:f32){
+        self.transform(&self.transform*&Matrix::identity_matrix(4).translation(x,y,z));
+    }
+
 }
 #[derive(Clone, Debug, PartialEq)]
 pub enum PatternType {
