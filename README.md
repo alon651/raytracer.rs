@@ -9,6 +9,6 @@ clone the repository.
 make sure cargo and rust are installed then run: `cargo init`
 after that there are two options: 
 ### running an example scene
-run `cargo run --bin \<scene-name> --release
+run `cargo run --bin \<scene-name> --release`
 ### running a custom scene
 in the "bin" directory add a new file create a new file and create your own scene, you can view the example in the file: `example1.rs`
